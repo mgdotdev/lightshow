@@ -1,4 +1,4 @@
 #!/bin/bash
 
-kill $(pgrep python)
-nohup python /root/code/script.py "$@" &
+kill $(pgrep lightshow)
+nohup lightshow "$@" &
