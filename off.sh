@@ -1,4 +1,4 @@
 #!/bin/bash
 
-kill $(pgrep python)
-python lightshow "off"
+kill $(pgrep lightshow)
+lightshow "off"

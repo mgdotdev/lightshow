@@ -1,4 +1,4 @@
 #!/bin/bash
 
-kill $(pgrep python)
+kill $(pgrep lightshow)
 nohup lightshow "$@" &
