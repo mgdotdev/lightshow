@@ -1,11 +1,12 @@
 class Comet:
-    def __init__(self, start, step, length, color, pixels):
+    def __init__(self, start, step, length, color, pixels, background=(0, 0, 0)):
         self.current = start
         self.step = step
         self.pixels = pixels
         self.colors = [
             tuple((c - ((i / (length - 1)) * c)) for c in color) for i in range(length)
-        ] + [(0, 0, 0)]
+        ]
+        self.colors.append(background)
 
     def __iter__(self):
         return self
