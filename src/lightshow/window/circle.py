@@ -1,3 +1,4 @@
+import time
 import itertools
 
 
@@ -21,4 +22,5 @@ def circle(pixels):
         for count, index in enumerate(_greens, start=-1 * span):
             pixels[index] = (255 - abs(int(count / span * 255)), 0, 0)
 
+        time.sleep(0.05)
         pixels.show()
