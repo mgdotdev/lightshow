@@ -10,6 +10,8 @@ from .tree.comets import comets as tree_comets
 
 def main():
     if sys.argv[-1] == "off":
+        pixels = neopixel.NeoPixel(board.D18, 1000)
+        pixels.fill((0, 0, 0))
         return
     _, target, effect = sys.argv
     if target == "window":
