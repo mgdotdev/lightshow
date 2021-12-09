@@ -12,14 +12,14 @@ def main():
         return
     _, target, effect = sys.argv
     if target == "window":
-        pixels = neopixel.NeoPixel(board.D18, 50, brightness=1)
+        pixels = neopixel.NeoPixel(board.D18, 50, brightness=1, auto_write=False)
         pixels.fill((0, 0, 0))
         if effect == "comets":
             window_comets(pixels)
         elif effect == "circle":
             window_circle(pixels)
     elif target == "tree":
-        pixels = neopixel.NeoPixel(board.D18, 200, brightness=1)
+        pixels = neopixel.NeoPixel(board.D18, 200, brightness=1, auto_write=False)
         pixels.fill((0, 0, 0))
         if effect == "comets":
             tree_comets(pixels)

@@ -1,6 +1,7 @@
 import itertools
 
-from ..objects import Comet
+from ..objects import Comet, Terminal
+
 
 def comets(pixels):
     comets = [
@@ -8,6 +9,7 @@ def comets(pixels):
         Comet(12, -1, 10, (0, 255, 0), pixels),
         Comet(25, -1, 10, (255, 0, 0), pixels),
         Comet(37, -1, 10, (0, 255, 0), pixels),
+        Terminal(delay=0.1)
     ]
     for comet in itertools.cycle(comets):
         next(comet)

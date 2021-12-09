@@ -15,3 +15,13 @@ class Comet:
         self.current = (self.current + self.step) % len(self.pixels)
         for idx, item in enumerate(self.colors):
             self.pixels[(self.current + idx) % len(self.pixels)] = item
+
+class Terminal:
+    def __init__(self, pixels, delay=0.01):
+        self.pixels = pixels
+    
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        self.pixels.show()
