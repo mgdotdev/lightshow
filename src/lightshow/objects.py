@@ -6,9 +6,14 @@ class Comet:
         self.current = start
         self.step = step
         self.pixels = pixels
-        self.colors = [
-            tuple((c - ((i / (length - 1)) * c)) for c in color) for i in range(length)
-        ]
+        self.colors = [tuple(0.5 * c for c in color)]
+        self.colors.extend([color, color])
+        self.colors.extend(
+            [
+                tuple((c - ((i / (length - 1)) * c)) for c in color)
+                for i in range(length - 3)
+            ]
+        )
         self.colors.append(background)
 
     def __iter__(self):

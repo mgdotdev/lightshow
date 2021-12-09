@@ -2,11 +2,12 @@ import itertools
 
 from ..objects import Comet, Terminal
 
-BACKGROUND = (0,0,0)
+BACKGROUND = (0, 0, 0)
 
 GREEN = (255, 0, 0)
 RED = (0, 255, 0)
 TAIL_LENGTH = 20
+
 
 def comets(pixels):
     comets = [
