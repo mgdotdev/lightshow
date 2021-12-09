@@ -2,7 +2,7 @@ import itertools
 
 from ..objects import Comet
 
-def comet(pixels):
+def comets(pixels):
     comets = [
         Comet(0, -1, 10, (255, 0, 0), pixels),
         Comet(50, -1, 10, (0, 255, 0), pixels),
