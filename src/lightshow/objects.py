@@ -1,3 +1,6 @@
+import time
+
+
 class Comet:
     def __init__(self, start, step, length, color, pixels, background=(0, 0, 0)):
         self.current = start
@@ -16,12 +19,15 @@ class Comet:
         for idx, item in enumerate(self.colors):
             self.pixels[(self.current + idx) % len(self.pixels)] = item
 
+
 class Terminal:
     def __init__(self, pixels, delay=0.01):
         self.pixels = pixels
-    
+        self.delay = delay
+
     def __iter__(self):
         return self
 
     def __next__(self):
+        time.sleep(self.delay)
         self.pixels.show()

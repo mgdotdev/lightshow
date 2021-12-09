@@ -20,5 +20,5 @@ def circle(pixels):
 
         for count, index in enumerate(_greens, start=-1 * span):
             pixels[index] = (255 - abs(int(count / span * 255)), 0, 0)
-            
+
         pixels.show()
