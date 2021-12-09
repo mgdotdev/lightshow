@@ -2,11 +2,12 @@ import itertools
 
 from ..objects import Comet, Terminal
 
-BACKGROUND = (25,25,25)
+BACKGROUND = (0,0,0)
 
 GREEN = (255, 0, 0)
 RED = (0, 255, 0)
-TAIL_LENGTH = 20
+TAIL_LENGTH = 24
+
 def comets(pixels):
     comets = [
         Comet(0, -1, TAIL_LENGTH, GREEN, pixels, background=BACKGROUND),
@@ -19,6 +20,6 @@ def comets(pixels):
         Comet(175, -1, TAIL_LENGTH, RED, pixels, background=BACKGROUND),
         Terminal(pixels, delay=0.025),
     ]
-    
+
     for comet in itertools.cycle(comets):
         next(comet)
