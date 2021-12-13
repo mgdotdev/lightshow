@@ -22,7 +22,7 @@ def main():
         elif effect == "circle":
             window_circle(pixels)
     elif target == "tree":
-        pixels = neopixel.NeoPixel(board.D18, 200, brightness=1, auto_write=False)
+        pixels = neopixel.NeoPixel(board.D18, 250, brightness=1, auto_write=False)
         pixels.fill((0, 0, 0))
         if effect == "comets":
             tree_comets(pixels)
