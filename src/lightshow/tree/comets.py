@@ -19,7 +19,7 @@ def comets(pixels):
         Comet(125, 1, TAIL_LENGTH, RED, pixels, background=BACKGROUND),
         Comet(150, 1, TAIL_LENGTH, GREEN, pixels, background=BACKGROUND),
         Comet(175, 1, TAIL_LENGTH, RED, pixels, background=BACKGROUND),
-        Comet(200, 1, TAIL_LENGTH, RED, pixels, background=BACKGROUND),
+        Comet(200, 1, TAIL_LENGTH, GREEN, pixels, background=BACKGROUND),
         Comet(225, 1, TAIL_LENGTH, RED, pixels, background=BACKGROUND),
         Comet(250, 1, TAIL_LENGTH, GREEN, pixels, background=BACKGROUND),
         Comet(275, 1, TAIL_LENGTH, RED, pixels, background=BACKGROUND),
