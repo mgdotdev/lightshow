@@ -58,7 +58,7 @@ def pulse(px1, px2):
     px1 = Offset(px1, 3)
     px2 = Offset(px2, 12)
     col = Column(px1, px2)
-    for i in itertools.cycle(range(CIRCUMFERENCE)):
+    for i in itertools.cycle(range(CIRCUMFERENCE + 1)):
         col[i] = tuple(random.randint(0,255) for _ in range(3))
         col.show()
         time.sleep(0.5)
