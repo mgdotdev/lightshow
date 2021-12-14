@@ -14,7 +14,6 @@ ascends counterclockwise
 
 import time
 import itertools
-import random
 
 CIRCUMFERENCE = 13
 
@@ -62,14 +61,24 @@ class Column:
     def show(self):
         self.bottom.show()
         self.top.show()
-        
+
+
+def pulse_indexes(center, spread, pixel_count, offset=0):
+    return tuple(
+        (i % pixel_count)
+        for i in range(center - spread + offset, center + spread + offset + 1)
+    )
+
 
 def pulse(px1, px2):
     px1 = Offset(px1, 3)
     px2 = Offset(px2, 12)
     col = Column(px1, px2)
+    span = 3
     for i in itertools.cycle(col):
-        col[i] = tuple(random.randint(0,255) for _ in range(3))
+        indexes = pulse_indexes(i, span, len(col))
+        for count, index in enumerate(indexes, start=-1 * span):
+            col[index] = (0, 255 - abs(int(count / span * 255)), 0)
         col.show()
-        time.sleep(0.25)
+        time.sleep(0.05)
 
