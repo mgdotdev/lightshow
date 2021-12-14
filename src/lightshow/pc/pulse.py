@@ -53,7 +53,7 @@ class Column:
         return CIRCUMFERENCE + 1
 
     def __iter__(self):
-        for i in range(CIRCUMFERENCE + 1):
+        for i in range(len(self)):
             yield i
 
     def fill(self):
