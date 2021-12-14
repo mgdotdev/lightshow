@@ -17,6 +17,7 @@ def main():
     if target == "apple":
         pixels = neopixel.NeoPixel(board.D18, 50, brightness=1, auto_write=False)
         pixels.fill((0, 0, 0))
+        pixels.show()
         if effect == OFF:
             return        
         elif effect == "comets":
@@ -26,6 +27,7 @@ def main():
     elif target == "mud":
         pixels = neopixel.NeoPixel(board.D18, 300, brightness=1, auto_write=False)
         pixels.fill((0, 0, 0))
+        pixels.show()
         if effect == OFF:
             return
         elif effect == "comets":
@@ -33,8 +35,9 @@ def main():
     elif target == "keylime":
         px1 = neopixel.NeoPixel(board.D18, 13, brightness=1, auto_write=False)
         px2 = neopixel.NeoPixel(board.D21, 13, brightness=1, auto_write=False)
-        px1.fill((0,0,0))
-        px2.fill((0,0,0))
+        for pixels in (px1, px2):
+            pixels.fill((0,0,0))
+            pixels.show()
         if effect == OFF:
             return
         elif effect == "circle":
