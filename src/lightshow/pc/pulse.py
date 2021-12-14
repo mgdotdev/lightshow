@@ -18,6 +18,7 @@ import itertools
 CIRCUMFERENCE = 13
 
 class Offset:
+    """Allows us to pretend that the fan circle starts at zero at the bottom."""
     def __init__(self, px, offset) -> None:
         self.px = px
         self.offset = offset
@@ -34,7 +35,8 @@ class Offset:
 
 
 class Column:
-    """Maps items to the LEDs"""
+    """Maps __setitem__ to the LEDs around the two column fans, reflected across
+    x axis."""
     def __init__(self, bottom, top) -> None:
         self.top = top
         self.bottom = bottom
@@ -71,14 +73,14 @@ def pulse_indexes(center, spread, pixel_count, offset=0):
 
 
 def pulse(px1, px2):
+    span = 7
     px1 = Offset(px1, 3)
     px2 = Offset(px2, 12)
     col = Column(px1, px2)
-    span = 7
     for i in itertools.cycle(col):
         indexes = pulse_indexes(i, span, len(col))
         for count, index in enumerate(indexes, start=-1 * span):
             col[index] = (0, 255 - abs(int(count / span * 255)), 255 - abs(int(count / span * 255)))
         col.show()
-        time.sleep(0.05)
+        time.sleep(0.025)
 
