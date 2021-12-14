@@ -47,6 +47,7 @@ class Column:
             self.bottom[key] = val
             self.bottom[CIRCUMFERENCE - key] = val
         elif key > (CIRCUMFERENCE // 2) + self.space:
+            key = key - self.space
             self.top[key] = val
             self.top[CIRCUMFERENCE - key] = val
 
