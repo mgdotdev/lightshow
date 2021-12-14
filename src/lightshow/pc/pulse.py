@@ -74,7 +74,7 @@ def pulse(px1, px2):
     px1 = Offset(px1, 3)
     px2 = Offset(px2, 12)
     col = Column(px1, px2)
-    span = 5
+    span = 7
     for i in itertools.cycle(col):
         indexes = pulse_indexes(i, span, len(col))
         for count, index in enumerate(indexes, start=-1 * span):
