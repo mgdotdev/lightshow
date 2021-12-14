@@ -40,20 +40,21 @@ class Column:
     def __init__(self, bottom, top) -> None:
         self.top = top
         self.bottom = bottom
+        self.space = 3
 
     def __setitem__(self, key, val):
         if key <= CIRCUMFERENCE // 2:
             self.bottom[key] = val
             self.bottom[CIRCUMFERENCE - key] = val
-        elif key > (CIRCUMFERENCE // 2) + 1:
+        elif key > (CIRCUMFERENCE // 2) + self.space:
             self.top[key] = val
             self.top[CIRCUMFERENCE - key] = val
 
     def __len__(self):
-        return CIRCUMFERENCE + 2
+        return CIRCUMFERENCE + 1 + self.space
 
     def __iter__(self):
-        for i in range(CIRCUMFERENCE + 2):
+        for i in range(len(self)):
             yield i
 
     def fill(self):
