@@ -40,7 +40,7 @@ class Column:
     def __init__(self, bottom, top) -> None:
         self.top = top
         self.bottom = bottom
-        self.space = 2
+        self.space = 1
 
     def __setitem__(self, key, val):
         if key <= CIRCUMFERENCE // 2:
