@@ -82,5 +82,5 @@ def pulse(px1, px2):
         for count, index in enumerate(indexes, start=-1 * span):
             col[index] = (0, 255 - abs(int(count / span * 255)), 255 - abs(int(count / span * 255)))
         col.show()
-        time.sleep(0.025)
+        time.sleep(0.04)
 
