@@ -26,6 +26,7 @@ class Offset:
     def __setitem__(self, key, val):
         new = (key + self.offset) % CIRCUMFERENCE
         self.px[new] = val
+        print(new)
 
     def fill(self, *args, **kwargs):
         self.px.fill(*args, **kwargs)
@@ -35,12 +36,13 @@ class Offset:
 
 
 class Column:
+    """Maps items to the LEDs"""
     def __init__(self, bottom, top) -> None:
         self.top = top
         self.bottom = bottom
 
     def __setitem__(self, key, val):
-        if key <= CIRCUMFERENCE // 2:
+        if key <= (CIRCUMFERENCE // 2) + 1:
             self.bottom[key] = val
             self.bottom[CIRCUMFERENCE - key] = val
         else:
