@@ -40,22 +40,20 @@ class Column:
     def __init__(self, bottom, top) -> None:
         self.top = top
         self.bottom = bottom
-        self.space = 1
 
     def __setitem__(self, key, val):
         if key <= CIRCUMFERENCE // 2:
             self.bottom[key] = val
             self.bottom[CIRCUMFERENCE - key] = val
-        elif key > (CIRCUMFERENCE // 2) + self.space:
-            key = key - self.space
+        else:
             self.top[key] = val
             self.top[CIRCUMFERENCE - key] = val
 
     def __len__(self):
-        return CIRCUMFERENCE + 1 + self.space
+        return CIRCUMFERENCE + 1
 
     def __iter__(self):
-        for i in range(len(self)):
+        for i in range(CIRCUMFERENCE + 1):
             yield i
 
     def fill(self):
@@ -84,5 +82,5 @@ def pulse(px1, px2):
         for count, index in enumerate(indexes, start=-1 * span):
             col[index] = (0, 255 - abs(int(count / span * 255)), 255 - abs(int(count / span * 255)))
         col.show()
-        time.sleep(0.04)
+        time.sleep(0.05)
 
