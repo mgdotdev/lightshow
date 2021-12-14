@@ -45,15 +45,15 @@ class Column:
         if key <= CIRCUMFERENCE // 2:
             self.bottom[key] = val
             self.bottom[CIRCUMFERENCE - key] = val
-        else:
+        elif key > (CIRCUMFERENCE // 2) + 1:
             self.top[key] = val
             self.top[CIRCUMFERENCE - key] = val
 
     def __len__(self):
-        return CIRCUMFERENCE + 1
+        return CIRCUMFERENCE + 2
 
     def __iter__(self):
-        for i in range(CIRCUMFERENCE + 1):
+        for i in range(CIRCUMFERENCE + 2):
             yield i
 
     def fill(self):
