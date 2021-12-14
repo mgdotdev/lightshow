@@ -26,7 +26,6 @@ class Offset:
     def __setitem__(self, key, val):
         new = (key + self.offset) % CIRCUMFERENCE
         self.px[new] = val
-        print(new)
 
     def fill(self, *args, **kwargs):
         self.px.fill(*args, **kwargs)
@@ -49,6 +48,17 @@ class Column:
             self.top[key] = val
             self.top[CIRCUMFERENCE - key] = val
 
+    def __len__(self):
+        return CIRCUMFERENCE + 1
+
+    def __iter__(self):
+        for i in range(CIRCUMFERENCE + 1):
+            yield i
+
+    def fill(self):
+        self.bottom.fill()
+        self.top.fill()
+
     def show(self):
         self.bottom.show()
         self.top.show()
@@ -58,8 +68,8 @@ def pulse(px1, px2):
     px1 = Offset(px1, 3)
     px2 = Offset(px2, 12)
     col = Column(px1, px2)
-    for i in itertools.cycle(range(CIRCUMFERENCE + 1)):
+    for i in itertools.cycle(col):
         col[i] = tuple(random.randint(0,255) for _ in range(3))
         col.show()
-        time.sleep(0.5)
+        time.sleep(0.25)
 
