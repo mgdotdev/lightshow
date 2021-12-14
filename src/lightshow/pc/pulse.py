@@ -42,7 +42,7 @@ class Column:
         self.bottom = bottom
 
     def __setitem__(self, key, val):
-        if key <= (CIRCUMFERENCE // 2) + 1:
+        if key <= CIRCUMFERENCE // 2:
             self.bottom[key] = val
             self.bottom[CIRCUMFERENCE - key] = val
         else:
