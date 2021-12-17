@@ -12,6 +12,7 @@ from .window.comets import comets as window_comets
 
 OFF = "off"
 
+
 def main():
     target = socket.gethostname()
     _, effect = sys.argv
@@ -20,7 +21,7 @@ def main():
         pixels.fill((0, 0, 0))
         pixels.show()
         if effect == OFF:
-            return        
+            return
         elif effect == "comets":
             window_comets(pixels)
         elif effect == "circle":
@@ -37,7 +38,7 @@ def main():
         px1 = neopixel.NeoPixel(board.D18, 13, brightness=1, auto_write=False)
         px2 = neopixel.NeoPixel(board.D21, 13, brightness=1, auto_write=False)
         for pixels in (px1, px2):
-            pixels.fill((0,0,0))
+            pixels.fill((0, 0, 0))
             pixels.show()
         if effect == OFF:
             return

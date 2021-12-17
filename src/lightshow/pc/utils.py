@@ -3,6 +3,7 @@ CIRCUMFERENCE = 13
 
 class Offset:
     """Allows us to pretend that the fan circle starts at zero at the bottom."""
+
     def __init__(self, px, offset):
         self.px = px
         self.offset = offset
@@ -10,6 +11,10 @@ class Offset:
     def __setitem__(self, key, val):
         new = (key + self.offset) % CIRCUMFERENCE
         self.px[new] = val
+
+    def __getitem__(self, key):
+        new = (key + self.offset) % CIRCUMFERENCE
+        return self.px[new]
 
     def fill(self, *args, **kwargs):
         self.px.fill(*args, **kwargs)
@@ -37,9 +42,9 @@ class ColumnUtil:
     def show(self):
         self.bottom.show()
         self.top.show()
-        
+
     def clear(self):
-        self.fill((0,0,0))
+        self.fill((0, 0, 0))
 
 
 class SplitColumnUtil(ColumnUtil):
@@ -52,13 +57,22 @@ class SplitColumnUtil(ColumnUtil):
 class SingleColumn(ColumnUtil):
     """Maps __setitem__ to the LEDs around the two column fans, reflected across
     x axis."""
+
     def __setitem__(self, key, val):
+        target = self._get_target(key)
+        target[key] = val
+        target[CIRCUMFERENCE - key] = val
+
+    def __getitem__(self, key):
+        target = self._get_target(key)
+        return target[key]
+
+    def _get_target(self, key):
         if key <= CIRCUMFERENCE // 2:
             target = self.bottom
         else:
             target = self.top
-        target[key] = val
-        target[CIRCUMFERENCE - key] = val
+        return target
 
 
 class LeftColumn(SplitColumnUtil):
@@ -66,13 +80,21 @@ class LeftColumn(SplitColumnUtil):
         super().__init__(bottom, top)
 
     def __setitem__(self, key, val):
+        target, key = self._key_and_target(key)
+        target[key] = val
+
+    def __getitem__(self, key):
+        target, key = self._key_and_target(key)
+        return target[key]
+
+    def _key_and_target(self, key):
         if key <= CIRCUMFERENCE // 2:
             target = self.bottom
             key = CIRCUMFERENCE - key
         else:
             target = self.top
             key = CIRCUMFERENCE + (CIRCUMFERENCE // 2) - key
-        target[key] = val
+        return key, target
 
 
 class RightColumn(SplitColumnUtil):
@@ -88,10 +110,8 @@ class RightColumn(SplitColumnUtil):
         target[key] = val
 
 
-
 class DualColumn(ColumnUtil):
     def __init__(self, bottom, top):
         super().__init__(bottom, top)
         self.left = LeftColumn(bottom, top)
         self.right = RightColumn(bottom, top)
-        
