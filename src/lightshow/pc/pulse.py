@@ -54,7 +54,7 @@ def dual_pulse(px1, px2):
 
 
 def quad_pulse(px1, px2):
-    span = 1
+    span = 2
     px1 = Offset(px1, 3)
     px2 = Offset(px2, 6)
     cols = DualColumn(px1, px2)
