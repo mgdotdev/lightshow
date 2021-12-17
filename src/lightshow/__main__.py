@@ -4,11 +4,16 @@ import sys
 import board
 import neopixel
 
-from .pc.pulse import pulse as pc_pulse, dual_pulse as pc_dual_pulse
+
 from .pc.circle import circle as pc_circle
 from .tree.comets import comets as tree_comets
 from .window.circle import circle as window_circle
 from .window.comets import comets as window_comets
+from .pc.pulse import (
+    pulse as pc_pulse, 
+    dual_pulse as pc_dual_pulse,
+    quad_pulse as pc_quad_pulse,
+)
 
 OFF = "off"
 
@@ -48,3 +53,5 @@ def main():
             pc_pulse(px1, px2)
         elif effect == "dpulse":
             pc_dual_pulse(px1, px2)
+        elif effect == "qpulse":
+            pc_quad_pulse(px1, px2)
