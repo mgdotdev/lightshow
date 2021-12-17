@@ -59,4 +59,8 @@ def main():
         elif effect == "dpulse":
             pc_dual_pulse(px1, px2)
         elif effect == "qpulse":
-            pc_quad_pulse(px1, px2)
+            if options:
+                profile, *options = options
+            else:
+                profile = "1"
+            pc_quad_pulse(px1, px2, int(profile))
