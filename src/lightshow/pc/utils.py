@@ -71,7 +71,7 @@ class LeftColumn(SplitColumnUtil):
             key = CIRCUMFERENCE - key
         else:
             target = self.top
-            key = CIRCUMFERENCE - key
+            key = CIRCUMFERENCE + (CIRCUMFERENCE // 2) - key
         target[key] = val
 
 
