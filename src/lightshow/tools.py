@@ -11,5 +11,6 @@ def color_fader(color):
 
     return fader
 
+
 def color_from_string(string):
-    return tuple(int(x) for x in string.split(','))
+    return tuple(int(x) for x in string.split(","))
