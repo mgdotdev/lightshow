@@ -80,11 +80,11 @@ class LeftColumn(SplitColumnUtil):
         super().__init__(bottom, top)
 
     def __setitem__(self, key, val):
-        target, key = self._key_and_target(key)
+        key, target = self._key_and_target(key)
         target[key] = val
 
     def __getitem__(self, key):
-        target, key = self._key_and_target(key)
+        key, target = self._key_and_target(key)
         return target[key]
 
     def _key_and_target(self, key):
