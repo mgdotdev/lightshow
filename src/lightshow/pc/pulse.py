@@ -17,7 +17,7 @@ import itertools
 
 from .utils import DualColumn, Offset, SingleColumn, color_add
 
-from ..tools import circle_indexes
+from ..tools import circle_indexes, color_maker
 
 
 def pulse(px1, px2):
@@ -66,9 +66,20 @@ def quad_pulse(px1, px2):
             for n in range(0, 12, 3)
         )
 
-        for lft_idx, rgt_idx in zip(idxs, idxs):
+        colors = (
+            (255, 0, 0),
+            (255, 118, 38),
+            (255, 237, 38),
+            (255, 255, 255)
+        )
+
+        cfuncs = (
+            color_maker(c) for c in colors
+        )
+
+        for lft_idx, rgt_idx, lft_c, rgt_c in zip(idxs, idxs, cfuncs, cfuncs):
             for count, (l_i, r_i) in enumerate(zip(lft_idx, rgt_idx), start=-1 * span):
-                cols.left[l_i] = color_add(cols.left[l_i], (0, 255 - abs(int(count / span * 255)), 0))
-                cols.right[r_i] = color_add(cols.right[r_i], (0, 0, 255 - abs(int(count / span * 255))))
+                cols.left[l_i] = color_add(cols.left[l_i], lft_c(count, span))
+                cols.right[r_i] = color_add(cols.right[r_i], rgt_c(count, span))
         cols.show()
         time.sleep(0.10)
