@@ -47,8 +47,12 @@ def dual_pulse(px1, px2):
         rgt_idx = circle_indexes(i, span, len(cols), offset=6)
         cols.clear()
         for count, (l_i, r_i) in enumerate(zip(lft_idx, rgt_idx), start=-1 * span):
-            cols.left[l_i] = color_add(cols.left[l_i], (0, 255 - abs(int(count / span * 255)), 0))
-            cols.right[r_i] = color_add(cols.right[r_i], (0, 0, 255 - abs(int(count / span * 255))))
+            cols.left[l_i] = color_add(
+                cols.left[l_i], (0, 255 - abs(int(count / span * 255)), 0)
+            )
+            cols.right[r_i] = color_add(
+                cols.right[r_i], (0, 0, 255 - abs(int(count / span * 255)))
+            )
         cols.show()
         time.sleep(0.05)
 
@@ -61,21 +65,11 @@ def quad_pulse(px1, px2):
     for i in itertools.cycle(cols):
         cols.clear()
 
-        idxs = (
-            circle_indexes(i, span, len(cols), offset=n)
-            for n in range(0, 12, 3)
-        )
+        idxs = (circle_indexes(i, span, len(cols), offset=n) for n in range(0, 12, 3))
 
-        colors = (
-            (0, 255, 0),
-            (255, 255, 0),
-            (255, 0, 255),
-            (0,0,255)
-        )
+        colors = ((0, 255, 0), (255, 255, 0), (255, 0, 255), (0, 0, 255))
 
-        cfuncs = (
-            color_maker(c) for c in colors
-        )
+        cfuncs = (color_maker(c) for c in colors)
 
         for lft_idx, rgt_idx, lft_c, rgt_c in zip(idxs, idxs, cfuncs, cfuncs):
             for count, (l_i, r_i) in enumerate(zip(lft_idx, rgt_idx), start=-1 * span):

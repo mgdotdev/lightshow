@@ -2,12 +2,7 @@ CIRCUMFERENCE = 13
 
 
 def color_add(target, item):
-    return tuple(
-        i 
-        if (i := sum((a, b))) < 255 
-        else 255 
-        for (a,b) in zip(target, item)
-    )
+    return tuple(i if (i := sum((a, b))) < 255 else 255 for (a, b) in zip(target, item))
 
 
 class Offset:

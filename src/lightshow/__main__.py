@@ -10,7 +10,7 @@ from .tree.comets import comets as tree_comets
 from .window.circle import circle as window_circle
 from .window.comets import comets as window_comets
 from .pc.pulse import (
-    pulse as pc_pulse, 
+    pulse as pc_pulse,
     dual_pulse as pc_dual_pulse,
     quad_pulse as pc_quad_pulse,
 )
