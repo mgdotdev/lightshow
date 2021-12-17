@@ -73,7 +73,7 @@ def quad_pulse(px1, px2):
     for i in itertools.cycle(cols):
         cols.clear()
 
-        if random.random() > 0.99:
+        if random.random() > 0.95:
             cindex = random.choice(range(len(colors_list)))
             colors = colors_list[cindex]
 
