@@ -45,8 +45,9 @@ def dual_pulse(px1, px2):
     for i in itertools.cycle(cols):
         lft_idx = circle_indexes(i, span, len(cols))
         rgt_idx = circle_indexes(i, span, len(cols), offset=6)
+        cols.clear()
         for count, (l_i, r_i) in enumerate(zip(lft_idx, rgt_idx), start=-1 * span):
             cols.left[l_i] = color_add(cols.left[l_i], (0, 255 - abs(int(count / span * 255)), 0))
-            # cols.right[r_i] = color_add(cols.right[r_i], (0, 0, 255 - abs(int(count / span * 255))))
+            cols.right[r_i] = color_add(cols.right[r_i], (0, 0, 255 - abs(int(count / span * 255))))
         cols.show()
         time.sleep(0.05)
