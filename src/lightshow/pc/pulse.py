@@ -54,7 +54,7 @@ def dual_pulse(px1, px2):
 
 
 def quad_pulse(px1, px2):
-    span = 2
+    span = 1
     px1 = Offset(px1, 3)
     px2 = Offset(px2, 6)
     cols = DualColumn(px1, px2)
@@ -62,8 +62,8 @@ def quad_pulse(px1, px2):
         cols.clear()
 
         idxs = (
-            circle_indexes(i, span, len(cols), offset=i)
-            for i in range(0, 12, 3)
+            circle_indexes(i, span, len(cols), offset=n)
+            for n in range(0, 12, 3)
         )
 
         for lft_idx, rgt_idx in zip(idxs, idxs):
