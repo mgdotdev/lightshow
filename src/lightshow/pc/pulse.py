@@ -63,21 +63,22 @@ def quad_pulse(px1, px2):
     px2 = Offset(px2, 6)
     cols = DualColumn(px1, px2)
     
+    # primary = [(255,0,0), (0,255,0),(0,0,255)]
+    # secondary = [(0,255,255),(255,0,255),(255,255,0)]
+    # colors = list(itertools.chain.from_iterable(zip(primary, secondary)))
 
     # colors = [(0, 255, 0), (255, 255, 0), (255, 0, 255), (0, 0, 255)],
     # colors = [(255, 255, 0), (255, 0, 0), (0, 0, 255), (0, 255, 255)],
-    # colors = [(0, 255, 255), (0, 255, 0), (255, 0, 0), (255, 0, 255)]
+    colors = [(0, 255, 255), (0, 255, 0), (255, 0, 0), (255, 0, 255)]
     
     span = 1
-    primary = [(255,0,0), (0,255,0),(0,0,255)]
-    secondary = [(0,255,255),(255,0,255),(255,255,0)]
-    colors = list(itertools.chain.from_iterable(zip(primary, secondary)))
+
     cfuncs = [color_fader(c) for c in colors]
     
     for i in itertools.cycle(cols):
         cols.clear()
 
-        idxs = (circle_indexes(i, span, len(cols), offset=n) for n in range(0, 12, 2))
+        idxs = (circle_indexes(i, span, len(cols), offset=n) for n in range(0, 12, 3))
         for lft_idx, rgt_idx, lft_c, rgt_c in zip(idxs, idxs, cfuncs, cfuncs):
             for count, (l_i, r_i) in enumerate(zip(lft_idx, rgt_idx), start=-1 * span):
                 cols.left[l_i] = color_add(cols.left[l_i], lft_c(count, span))
