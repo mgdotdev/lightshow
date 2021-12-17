@@ -63,17 +63,19 @@ def quad_pulse(px1, px2):
 
     # colors = [(0, 255, 0), (255, 255, 0), (255, 0, 255), (0, 0, 255)],
     # colors = [(255, 255, 0), (255, 0, 0), (0, 0, 255), (0, 255, 255)],
-    colors = [(0, 255, 255), (0, 255, 0), (255, 0, 0), (255, 0, 255)]
+    # colors = [(0, 255, 255), (0, 255, 0), (255, 0, 0), (255, 0, 255)]
 
+    primary = [(255,0,0), (0,255,0),(0,0,255)]
+    secondary = [(0,255,255),(255,0,255),(255,255,0)]
+    colors = list(zip(primary, secondary))
+    cfuncs = [color_fader(c) for c in colors]
     px1 = Offset(px1, 3)
     px2 = Offset(px2, 6)
     cols = DualColumn(px1, px2)
     for i in itertools.cycle(cols):
         cols.clear()
 
-        idxs = (circle_indexes(i, span, len(cols), offset=n) for n in range(0, 12, 3))
-        cfuncs = (color_fader(c) for c in colors)
-
+        idxs = (circle_indexes(i, span, len(cols), offset=n) for n in range(0, 12, 2))
         for lft_idx, rgt_idx, lft_c, rgt_c in zip(idxs, idxs, cfuncs, cfuncs):
             for count, (l_i, r_i) in enumerate(zip(lft_idx, rgt_idx), start=-1 * span):
                 cols.left[l_i] = color_add(cols.left[l_i], lft_c(count, span))
