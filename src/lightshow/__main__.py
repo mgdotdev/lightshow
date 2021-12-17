@@ -2,6 +2,7 @@ import socket
 import sys
 
 import board
+from lightshow.tools import color_from_string
 import neopixel
 
 
@@ -20,7 +21,7 @@ OFF = "off"
 
 def main():
     target = socket.gethostname()
-    _, effect = sys.argv
+    _, effect, *options = sys.argv
     if target == "apple":
         pixels = neopixel.NeoPixel(board.D18, 50, brightness=1, auto_write=False)
         pixels.fill((0, 0, 0))
@@ -48,7 +49,11 @@ def main():
         if effect == OFF:
             return
         elif effect == "circle":
-            pc_circle(px1, px2)
+            if options:
+                color_string, = options
+            else:
+                color_string = "0,255,255"
+            pc_circle(px1, px2, color_from_string(color_string))
         elif effect == "pulse":
             pc_pulse(px1, px2)
         elif effect == "dpulse":

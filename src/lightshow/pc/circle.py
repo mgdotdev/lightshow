@@ -6,8 +6,8 @@ PIXELS = 13
 from ..tools import circle_indexes, color_fader
 
 
-def circle(px1, px2):
-    cfunc = color_fader((0, 255, 255))
+def circle(px1, px2, color):
+    cfunc = color_fader(color)
     for i in itertools.cycle(range(PIXELS)):
         span = 12
         _cyan = circle_indexes(i, span, PIXELS)

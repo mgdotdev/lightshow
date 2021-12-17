@@ -10,3 +10,6 @@ def color_fader(color):
         return tuple((c - abs(int(count / span * c))) for c in color)
 
     return fader
+
+def color_from_string(string):
+    return tuple(int(x) for x in string.split(','))
