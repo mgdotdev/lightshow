@@ -5,8 +5,8 @@ def circle_indexes(center, spread, pixel_count, offset=0):
     )
 
 
-def color_maker(color):
-    def maker(count, span):
+def color_fader(color):
+    def fader(count, span):
         return tuple((c - abs(int(count / span * c))) for c in color)
 
-    return maker
+    return fader
