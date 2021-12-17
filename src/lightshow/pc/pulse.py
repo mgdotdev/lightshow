@@ -38,13 +38,13 @@ def pulse(px1, px2):
 
 
 def dual_pulse(px1, px2):
-    span = 3
+    span = 5
     px1 = Offset(px1, 3)
     px2 = Offset(px2, 6)
     cols = DualColumn(px1, px2)
     for i in itertools.cycle(cols):
         lft_idx = circle_indexes(i, span, len(cols))
-        rgt_idx = circle_indexes(i, span, len(cols), offset=3)
+        rgt_idx = circle_indexes(i, span, len(cols), offset=6)
         for count, (l_i, r_i) in enumerate(zip(lft_idx, rgt_idx), start=-1 * span):
             cols.left[l_i] = (0, 255 - abs(int(count / span * 255)), 0)
             cols.right[r_i] = (0, 0, 255 - abs(int(count / span * 255)))
