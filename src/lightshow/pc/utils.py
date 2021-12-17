@@ -38,6 +38,9 @@ class ColumnUtil:
         self.bottom.show()
         self.top.show()
         
+    def clear(self):
+        self.fill((0,0,0))
+
 
 class SplitColumnUtil(ColumnUtil):
     def fill(self, val):
@@ -68,7 +71,7 @@ class LeftColumn(SplitColumnUtil):
             key = CIRCUMFERENCE - key
         else:
             target = self.top
-            key = CIRCUMFERENCE - key - (CIRCUMFERENCE // 2)
+            key = CIRCUMFERENCE - key
         target[key] = val
 
 
@@ -81,7 +84,7 @@ class RightColumn(SplitColumnUtil):
             target = self.bottom
         else:
             target = self.top
-            key += (CIRCUMFERENCE // 2)
+            key = key + (CIRCUMFERENCE // 2)
         target[key] = val
 
 

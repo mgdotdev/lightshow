@@ -4,7 +4,7 @@ import sys
 import board
 import neopixel
 
-from .pc.pulse import pulse as pc_pulse
+from .pc.pulse import pulse as pc_pulse, dual_pulse as pc_dual_pulse
 from .pc.circle import circle as pc_circle
 from .tree.comets import comets as tree_comets
 from .window.circle import circle as window_circle
@@ -45,3 +45,5 @@ def main():
             pc_circle(px1, px2)
         elif effect == "pulse":
             pc_pulse(px1, px2)
+        elif effect == "dpulse":
+            pc_dual_pulse(px1, px2)
