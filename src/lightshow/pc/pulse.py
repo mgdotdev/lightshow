@@ -34,7 +34,7 @@ def pulse(px1, px2):
 
 
 def dual_pulse(px1, px2):
-    span = 5
+    span = 3
     px1 = Offset(px1, 3)
     px2 = Offset(px2, 6) 
     cols = DualColumn(px1, px2)
@@ -45,4 +45,4 @@ def dual_pulse(px1, px2):
             cols.left[l_i] = (0, 255 - abs(int(count / span * 255)), 0)
             cols.right[r_i] = (0, 0, 255 - abs(int(count / span * 255)))
         cols.show()
-        time.sleep(0.05)
+        time.sleep(0.25)
