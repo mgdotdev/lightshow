@@ -50,7 +50,7 @@ def main():
             return
         elif effect == "circle":
             if options:
-                (color_string,) = options
+                color_string, *options = options
             else:
                 color_string = "0,255,255"
             pc_circle(px1, px2, color_from_string(color_string))
@@ -62,5 +62,5 @@ def main():
             if options:
                 profile, *options = options
             else:
-                profile = "1"
+                profile = "2"
             pc_quad_pulse(px1, px2, int(profile))
