@@ -111,12 +111,20 @@ class RightColumn(SplitColumnUtil):
         super().__init__(bottom, top)
 
     def __setitem__(self, key, val):
+        key, target = self._key_and_target(key)
+        target[key] = val
+
+    def __getitem__(self, key):
+        key, target = self._key_and_target(key)
+        return target[key]
+
+    def _key_and_target(self, key):
         if key <= CIRCUMFERENCE // 2:
             target = self.bottom
         else:
             target = self.top
             key = key + (CIRCUMFERENCE // 2)
-        target[key] = val
+        return key, target
 
 
 class DualColumn(ColumnUtil):
