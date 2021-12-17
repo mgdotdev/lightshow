@@ -1,6 +1,15 @@
 CIRCUMFERENCE = 13
 
 
+def color_add(target, item):
+    return tuple(
+        i 
+        if (i := sum((a, b))) < 255 
+        else 255 
+        for (a,b) in zip(target, item)
+    )
+
+
 class Offset:
     """Allows us to pretend that the fan circle starts at zero at the bottom."""
 

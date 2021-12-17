@@ -15,7 +15,7 @@ ascends counterclockwise
 import time
 import itertools
 
-from .utils import DualColumn, Offset, SingleColumn
+from .utils import DualColumn, Offset, SingleColumn, color_add
 
 from ..tools import circle_indexes
 
@@ -38,7 +38,7 @@ def pulse(px1, px2):
 
 
 def dual_pulse(px1, px2):
-    span = 5
+    span = 8
     px1 = Offset(px1, 3)
     px2 = Offset(px2, 6)
     cols = DualColumn(px1, px2)
@@ -46,7 +46,7 @@ def dual_pulse(px1, px2):
         lft_idx = circle_indexes(i, span, len(cols))
         rgt_idx = circle_indexes(i, span, len(cols), offset=6)
         for count, (l_i, r_i) in enumerate(zip(lft_idx, rgt_idx), start=-1 * span):
-            cols.left[l_i] = (0, 255 - abs(int(count / span * 255)), 0)
-            cols.right[r_i] = (0, 0, 255 - abs(int(count / span * 255)))
+            cols.left[l_i] = color_add(cols.left[l_i], (0, 255 - abs(int(count / span * 255)), 0))
+            cols.right[r_i] = color_add(cols.right[r_i], (0, 0, 255 - abs(int(count / span * 255))))
         cols.show()
         time.sleep(0.05)
