@@ -68,7 +68,7 @@ def quad_pulse(px1, px2):
     # colors = [(255, 255, 0), (255, 0, 0), (0, 0, 255), (0, 255, 255)],
     # colors = [(0, 255, 255), (0, 255, 0), (255, 0, 0), (255, 0, 255)]
     
-    span = 4
+    span = 2
     primary = [(255,0,0), (0,255,0),(0,0,255)]
     secondary = [(0,255,255),(255,0,255),(255,255,0)]
     colors = list(itertools.chain.from_iterable(zip(primary, secondary)))
