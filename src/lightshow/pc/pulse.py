@@ -70,5 +70,5 @@ def quad_pulse(px1, px2):
             for count, (l_i, r_i) in enumerate(zip(lft_idx, rgt_idx), start=-1 * span):
                 cols.left[l_i] = color_add(cols.left[l_i], (0, 255 - abs(int(count / span * 255)), 0))
                 cols.right[r_i] = color_add(cols.right[r_i], (0, 0, 255 - abs(int(count / span * 255))))
-            cols.show()
-            time.sleep(0.05)
+        cols.show()
+        time.sleep(0.05)
