@@ -60,22 +60,16 @@ def dual_pulse(px1, px2):
 
 def quad_pulse(px1, px2):
     span = 4
-    colors_list = [
-        [(0, 255, 0), (255, 255, 0), (255, 0, 255), (0, 0, 255)],
-        [(255, 255, 0), (255, 0, 0), (0, 0, 255), (0, 255, 255)],
-        [(0, 255, 255), (0, 255, 0), (255, 0, 0), (255, 0, 255)]
-    ]
-    colors = colors_list[0]
+
+    # colors = [(0, 255, 0), (255, 255, 0), (255, 0, 255), (0, 0, 255)],
+    # colors = [(255, 255, 0), (255, 0, 0), (0, 0, 255), (0, 255, 255)],
+    colors = [(0, 255, 255), (0, 255, 0), (255, 0, 0), (255, 0, 255)]
 
     px1 = Offset(px1, 3)
     px2 = Offset(px2, 6)
     cols = DualColumn(px1, px2)
     for i in itertools.cycle(cols):
         cols.clear()
-
-        if random.random() > 0.95:
-            cindex = random.choice(range(len(colors_list)))
-            colors = colors_list[cindex]
 
         idxs = (circle_indexes(i, span, len(cols), offset=n) for n in range(0, 12, 3))
         cfuncs = (color_fader(c) for c in colors)
