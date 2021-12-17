@@ -82,4 +82,4 @@ def quad_pulse(px1, px2):
                 cols.left[l_i] = color_add(cols.left[l_i], lft_c(count, span))
                 cols.right[r_i] = color_add(cols.right[r_i], rgt_c(count, span))
         cols.show()
-        time.sleep(0.10)
+        time.sleep(0.05)
