@@ -12,6 +12,7 @@ COLORS = [
     (255,255,0),
     (0,255,255),
     (255,0,255),
+    (255,60,0),
 ]
 
 
@@ -20,12 +21,12 @@ def fire(bottom, top):
     top = Offset(top, 6)
 
     bottom_points = (
-        Point(bottom, i, *pos_from_center((0.5, 0.2), i, 0.1))
+        Point(bottom, i, *pos_from_center((0.5, 0.25), i, 0.2))
         for i in range(CIRCUMFERENCE)
     )
 
     top_points = (
-        Point(top, i, *pos_from_center((0.5, 0.8), i, 0.1))
+        Point(top, i, *pos_from_center((0.5, 0.75), i, 0.2))
         for i in range(CIRCUMFERENCE)
     )
 
@@ -60,7 +61,7 @@ def pos_from_center(position, index, radius):
 
 def color_from_distance(color, distance):
     """using an exponential decay function to calculate falloff"""
-    return tuple(int(c * math.e ** (-25 * distance)) for c in color)
+    return tuple(int(c * math.e ** (-20 * distance)) for c in color)
 
 
 def euclidean_distance(point, spark):
