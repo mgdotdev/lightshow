@@ -10,11 +10,11 @@ def fire(bottom, top):
     top = Offset(top, 6)
 
     bottom_points = (
-        Point(bottom, i, *pos_from_center((0, 0.3), i, 0.1)) for i in range(CIRCUMFERENCE)
+        Point(bottom, i, *pos_from_center((0.5, 0.3), i, 0.1)) for i in range(CIRCUMFERENCE)
     )
 
     top_points = (
-        Point(top, i, *pos_from_center((0, 0.7), i, 0.1)) for i in range(CIRCUMFERENCE)
+        Point(top, i, *pos_from_center((0.5, 0.7), i, 0.1)) for i in range(CIRCUMFERENCE)
     )
 
     points = list(itertools.chain(bottom_points, top_points))
@@ -30,8 +30,6 @@ def fire(bottom, top):
             point.update(sparks)
         bottom.show()
         top.show()
-        print("repeat")
-
 
 def pos_from_center(position, index, radius):
     angle = ((360 / CIRCUMFERENCE) * index) * (math.pi / 180)
