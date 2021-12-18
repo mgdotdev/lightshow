@@ -53,6 +53,7 @@ def fire(bottom, top):
 
 
 def pos_from_center(position, index, radius):
+    index = CIRCUMFERENCE - index
     angle = ((360 / CIRCUMFERENCE) * index) * (math.pi / 180)
     dy = radius * math.cos(angle)
     dx = radius * math.sin(angle)
@@ -110,4 +111,5 @@ class Sparks:
             c for c in self.collection if all(-0.5 < a < 1.5 for a in (c.y, c.x))
         ]
         if random.random() > 0.95:
-            self.collection.append(Spark(random.choice(COLORS), random.random(), 0.0))
+            new_spark = Spark(random.choice(COLORS), random.random(), -0.25)
+            self.collection.append(new_spark)
