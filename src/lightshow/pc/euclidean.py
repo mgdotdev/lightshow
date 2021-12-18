@@ -6,7 +6,7 @@ from lightshow.pc.utils import CIRCUMFERENCE, Offset, color_merge
 
 
 COLORS = [
-    (255, 0, 0)
+    (255, 0, 0),
     (255, 40, 0),
     (255, 80, 0),
     (255, 120, 0),
