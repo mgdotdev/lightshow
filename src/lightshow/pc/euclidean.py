@@ -113,9 +113,11 @@ class Sparks:
             c for c in self.collection if all(-0.5 < a < 1.5 for a in (c.y, c.x))
         ]
 
-        if random.random() > 0.75:
-            new_spark = Spark(random.choice(COLORS), random.random(), -0.5)
-            self.collection.append(new_spark)
+        if random.random() > 0.80:
+            self.collection.extend([
+                Spark(random.choice(COLORS), random.random(), -0.5), 
+                Spark(random.choice(COLORS), random.random(), -0.5)
+            ])
 
         # cap number of sparks
         # so we don't run into memory issues
