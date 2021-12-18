@@ -5,7 +5,7 @@ import random
 from lightshow.pc.utils import CIRCUMFERENCE, Offset, color_merge
 
 
-COLORS = [
+HOT_COLORS = [
     (255, 0, 0),
     (255, 40, 0),
     (255, 80, 0),
@@ -15,10 +15,26 @@ COLORS = [
     (255, 255, 0),
 ]
 
+COLD_COLORS = [
+    (0, 255, 255), 
+    (0, 255, 128),
+    (0, 255, 64),
+    (0, 255, 0),
+    (0, 255, 255), 
+    (0, 128, 255),
+    (0, 64, 255),
+    (0, 0, 255),
+]
 
-def fire(bottom, top):
+
+def fire(bottom, top, profile="h"):
     bottom = Offset(bottom, 3)
     top = Offset(top, 6)
+
+    if profile == "h":
+        colors, tfill, bfill = HOT_COLORS, (255, 20, 0), (255, 0, 0)
+    elif profile == "c":
+        colors, tfill, bfill = COLD_COLORS, (0,0,255), (0,20,255)
 
     bottom_points = (
         Point(bottom, i, *pos_from_center((0.5, 0.25), i, 0.4))
@@ -31,18 +47,11 @@ def fire(bottom, top):
     )
 
     points = list(itertools.chain(bottom_points, top_points))
-
-    sparks = Sparks(
-        [
-            Spark((255, 80, 0), 0.75, -0.5),
-            Spark((255, 80, 0), 0.50, -0.5),
-            Spark((255, 80, 0), 0.25, -0.5),
-        ]
-    )
+    sparks = Sparks(colors)
 
     while True:
-        bottom.fill((255, 0, 0))
-        top.fill((255, 20, 0))
+        bottom.fill(bfill)
+        top.fill(tfill)
         for spark in sparks:
             spark.step(dx=0, dy=0.03)
         for point in points:
@@ -100,8 +109,9 @@ class Spark(Coordinate):
 
 
 class Sparks:
-    def __init__(self, collection):
-        self.collection = collection
+    def __init__(self, colors, collection=None):
+        self.colors = colors
+        self.collection = collection or []
 
     def __iter__(self):
         for i in self.collection:
@@ -115,9 +125,9 @@ class Sparks:
 
         if random.random() > 0.80:
             self.collection.extend([
-                Spark(random.choice(COLORS), random.random(), -0.5), 
-                Spark(random.choice(COLORS), random.random(), -0.5),
-                Spark(random.choice(COLORS), random.random(), -0.5),
+                Spark(random.choice(self.COLORS), random.random(), -0.5), 
+                Spark(random.choice(self.COLORS), random.random(), -0.5),
+                Spark(random.choice(self.COLORS), random.random(), -0.5),
             ])
 
         # cap number of sparks

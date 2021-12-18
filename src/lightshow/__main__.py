@@ -49,7 +49,11 @@ def main():
         if effect == OFF:
             return
         elif effect == "fire":
-            pc_fire(px1, px2)
+            if options:
+                profile, *options = options
+            else:
+                profile = "h"
+            pc_fire(px1, px2, profile)
         elif effect == "circle":
             if options:
                 color_string, *options = options
