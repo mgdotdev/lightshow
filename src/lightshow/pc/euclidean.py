@@ -111,7 +111,7 @@ class Sparks:
             c for c in self.collection if all(-0.5 < a < 1.5 for a in (c.y, c.x))
         ]
 
-        if random.random() > 0.85:
+        if random.random() > 0.80:
             new_spark = Spark(random.choice(COLORS), random.random(), -0.5)
             self.collection.append(new_spark)
 
