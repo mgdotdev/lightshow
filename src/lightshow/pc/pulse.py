@@ -14,7 +14,6 @@ ascends counterclockwise
 
 import time
 import itertools
-import random
 
 from .utils import DualColumn, Offset, SingleColumn, color_add
 

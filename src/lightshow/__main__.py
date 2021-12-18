@@ -10,6 +10,7 @@ from .pc.circle import circle as pc_circle
 from .tree.comets import comets as tree_comets
 from .window.circle import circle as window_circle
 from .window.comets import comets as window_comets
+from .pc.euclidean import fire as pc_fire
 from .pc.pulse import (
     pulse as pc_pulse,
     dual_pulse as pc_dual_pulse,
@@ -48,6 +49,8 @@ def main():
             pixels.show()
         if effect == OFF:
             return
+        elif effect == "fire":
+            pc_fire(px1, px2)
         elif effect == "circle":
             if options:
                 color_string, *options = options
