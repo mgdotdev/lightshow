@@ -17,7 +17,7 @@ COLORS = [
 
 
 def fire(bottom, top):
-    bottom = Offset(bottom, 9)
+    bottom = Offset(bottom, 3)
     top = Offset(top, 6)
 
     bottom_points = (
@@ -53,7 +53,6 @@ def fire(bottom, top):
 
 
 def pos_from_center(position, index, radius):
-    index = CIRCUMFERENCE - index
     angle = ((360 / CIRCUMFERENCE) * index) * (math.pi / 180)
     dy = radius * math.cos(angle)
     dx = radius * math.sin(angle)
