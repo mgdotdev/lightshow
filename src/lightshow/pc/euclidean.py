@@ -94,4 +94,4 @@ class Sparks:
         ]
         if random.random() > 0.95:
             self.collection.append(Spark((0, 255, 0), random.random(), 1.0))
-        print(self.collection)
+        print([c.color for c in self.collection])
