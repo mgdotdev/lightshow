@@ -6,13 +6,13 @@ from lightshow.pc.utils import CIRCUMFERENCE, Offset, color_add
 
 
 COLORS = [
-    (255,20,0),
     (255,40,0),
     (255,60,0),
     (255,80,0),
     (255,120,0),
     (255,160,0),
     (255,255,0),
+    (255,255,255)
 ]
 
 
