@@ -33,9 +33,9 @@ def fire(bottom, top):
 
     sparks = Sparks(
         [
-            Spark((255, 0, 0), 0.75, 1.0),
-            Spark((0, 255, 0), 0.50, 1.0),
-            Spark((0, 0, 255), 0.25, 1.0),
+            Spark((255, 0, 0), 0.75, 0.0),
+            Spark((0, 255, 0), 0.50, 0.0),
+            Spark((0, 0, 255), 0.25, 0.0),
         ]
     )
 
@@ -43,7 +43,7 @@ def fire(bottom, top):
         bottom.clear()
         top.clear()
         for spark in sparks:
-            spark.step(dx=0, dy=-0.005)
+            spark.step(dx=0, dy=0.005)
         for point in points:
             point.update(sparks)
         bottom.show()
