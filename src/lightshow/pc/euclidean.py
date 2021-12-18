@@ -27,12 +27,11 @@ def fire(bottom, top):
         bottom.clear()
         top.clear()
         for spark in sparks:
-            spark.step(0, -0.01)
+            spark.step(dx=0, dy=-0.001)
         for point in points:
             point.update(sparks)
         bottom.show()
         top.show()
-
         sparks.prune()
 
 
@@ -95,3 +94,4 @@ class Sparks:
         ]
         if random.random() > 0.95:
             self.collection.append(Spark((0, 255, 0), random.random(), 1.0))
+        print(self.collection)
