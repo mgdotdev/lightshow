@@ -9,11 +9,11 @@ def fire(bottom, top):
     top = Offset(top, 6)
 
     bottom_points = (
-        Point(bottom, i, *pos_from_center(0.3, i, 0.1)) for i in range(CIRCUMFERENCE)
+        Point(bottom, i, *pos_from_center((0.3, 0), i, 0.1)) for i in range(CIRCUMFERENCE)
     )
 
     top_points = (
-        Point(top, i, *pos_from_center(0.3, i, 0.1)) for i in range(CIRCUMFERENCE)
+        Point(top, i, *pos_from_center((0.7, 0), i, 0.1)) for i in range(CIRCUMFERENCE)
     )
 
     points = list(itertools.chain(bottom_points, top_points))
