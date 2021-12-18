@@ -25,7 +25,7 @@ def fire(bottom, top):
         bottom.clear()
         top.clear()
         for spark in sparks:
-            spark.step(0.001, 0)
+            spark.step(0.01, 0)
         for point in points:
             point.update(sparks)
         bottom.show()
