@@ -25,13 +25,12 @@ def fire(bottom, top):
         bottom.clear()
         top.clear()
         for spark in sparks:
-            spark.step(0, 0.01)
+            spark.step(0, 0.0001)
         for point in points:
             point.update(sparks)
         bottom.show()
         top.show()
         print("repeat")
-        time.sleep(0.125)
 
 
 def pos_from_center(position, index, radius):
