@@ -5,6 +5,16 @@ import random
 from lightshow.pc.utils import CIRCUMFERENCE, Offset, color_add
 
 
+COLORS = [
+    (255,0,0),
+    (0,255,0),
+    (0,0,255),
+    (255,255,0),
+    (0,255,255),
+    (255,0,255),
+]
+
+
 def fire(bottom, top):
     bottom = Offset(bottom, 9)
     top = Offset(top, 6)
@@ -21,13 +31,19 @@ def fire(bottom, top):
 
     points = list(itertools.chain(bottom_points, top_points))
 
-    sparks = Sparks([Spark((255, 0, 0), 0.75, 1.0), Spark((0, 0, 255), 0.25, 1.0)])
+    sparks = Sparks(
+        [
+            Spark((255, 0, 0), 0.75, 1.0),
+            Spark((0, 255, 0), 0.50, 1.0),
+            Spark((0, 0, 255), 0.25, 1.0),
+        ]
+    )
 
     while True:
         bottom.clear()
         top.clear()
         for spark in sparks:
-            spark.step(dx=0, dy=-0.001)
+            spark.step(dx=0, dy=-0.005)
         for point in points:
             point.update(sparks)
         bottom.show()
@@ -93,5 +109,4 @@ class Sparks:
             c for c in self.collection if all(-0.5 < a < 1.5 for a in (c.y, c.x))
         ]
         if random.random() > 0.95:
-            self.collection.append(Spark((0, 255, 0), random.random(), 1.0))
-        print([c.color for c in self.collection])
+            self.collection.append(Spark(random.choice(COLORS), random.random(), 1.0))
