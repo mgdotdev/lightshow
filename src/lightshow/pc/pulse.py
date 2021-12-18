@@ -21,12 +21,12 @@ from .utils import DualColumn, Offset, SingleColumn, color_add
 from ..tools import circle_indexes, color_fader
 
 
-def pulse(px1, px2):
+def pulse(px1, px2, color):
     span = 7
     px1 = Offset(px1, 3)
     px2 = Offset(px2, 12)
     col = SingleColumn(px1, px2)
-    cfunc = color_fader((0, 255, 255))
+    cfunc = color_fader(color)
     for i in itertools.cycle(col):
         indexes = circle_indexes(i, span, len(col))
         for count, index in enumerate(indexes, start=-1 * span):

@@ -55,7 +55,11 @@ def main():
                 color_string = "0,255,255"
             pc_circle(px1, px2, color_from_string(color_string))
         elif effect == "pulse":
-            pc_pulse(px1, px2)
+            if options:
+                color_string, *options = options
+            else:
+                color_string = "0,255,255"
+            pc_pulse(px1, px2, color_from_string(color_string))
         elif effect == "dpulse":
             pc_dual_pulse(px1, px2)
         elif effect == "qpulse":
