@@ -61,7 +61,7 @@ class Point(Coordinate):
         for spark in sparks:
             dist = euclidean_distance(self, spark)
             color = color_from_distance(spark.color, dist)
-            self.fan[self.index] = color_add(self.point, color)
+            self.fan[self.index] = color_add(self.fan[self.index], color)
 
 
 class Spark(Coordinate):
