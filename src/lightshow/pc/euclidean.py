@@ -125,9 +125,9 @@ class Sparks:
 
         if random.random() > 0.80:
             self.collection.extend([
-                Spark(random.choice(self.COLORS), random.random(), -0.5), 
-                Spark(random.choice(self.COLORS), random.random(), -0.5),
-                Spark(random.choice(self.COLORS), random.random(), -0.5),
+                Spark(random.choice(self.colors), random.random(), -0.5), 
+                Spark(random.choice(self.colors), random.random(), -0.5),
+                Spark(random.choice(self.colors), random.random(), -0.5),
             ])
 
         # cap number of sparks
