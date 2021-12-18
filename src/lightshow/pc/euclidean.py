@@ -1,5 +1,6 @@
 import itertools
 import math
+from time import time
 
 from lightshow.pc.utils import CIRCUMFERENCE, Offset, color_add
 
@@ -30,6 +31,7 @@ def fire(bottom, top):
         bottom.show()
         top.show()
         print("repeat")
+        time.sleep(0.5)
 
 
 def pos_from_center(position, index, radius):
