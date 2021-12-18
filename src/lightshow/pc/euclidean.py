@@ -19,12 +19,12 @@ def fire(bottom, top):
     top = Offset(top, 6)
 
     bottom_points = (
-        Point(bottom, i, *pos_from_center((0.5, 0.25), i, 0.2))
+        Point(bottom, i, *pos_from_center((0.5, 0.25), i, 0.4))
         for i in range(CIRCUMFERENCE)
     )
 
     top_points = (
-        Point(top, i, *pos_from_center((0.5, 0.75), i, 0.2))
+        Point(top, i, *pos_from_center((0.5, 0.75), i, 0.4))
         for i in range(CIRCUMFERENCE)
     )
 
@@ -32,9 +32,9 @@ def fire(bottom, top):
 
     sparks = Sparks(
         [
-            Spark((255, 80, 0), 0.75, 0.0),
-            Spark((255, 80, 0), 0.50, 0.0),
-            Spark((255, 80, 0), 0.25, 0.0),
+            Spark((255, 80, 0), 0.75, -0.5),
+            Spark((255, 80, 0), 0.50, -0.5),
+            Spark((255, 80, 0), 0.25, -0.5),
         ]
     )
 
@@ -108,5 +108,5 @@ class Sparks:
             c for c in self.collection if all(-0.5 < a < 1.5 for a in (c.y, c.x))
         ]
         if random.random() > 0.8:
-            new_spark = Spark(random.choice(COLORS), random.random(), -0.25)
+            new_spark = Spark(random.choice(COLORS), random.random(), -0.5)
             self.collection.append(new_spark)
