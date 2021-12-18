@@ -40,7 +40,7 @@ def fire(bottom, top):
 
     while True:
         bottom.fill((255,0,0))
-        top.fill((255,50,0))
+        top.fill((255,20,0))
         for spark in sparks:
             spark.step(dx=0, dy=0.02)
         for point in points:
