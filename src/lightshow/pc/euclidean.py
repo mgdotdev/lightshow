@@ -19,13 +19,13 @@ def fire(bottom, top):
 
     points = list(itertools.chain(bottom_points, top_points))
 
-    sparks = [Spark((10, 10, 10), i / 10, 0) for i in range(-10, 10)]
+    sparks = [Spark((20, 20, 20), i / 10, 0) for i in range(-10, 10)]
 
     while True:
         bottom.clear()
         top.clear()
         for spark in sparks:
-            spark.step(0.0001, 0)
+            spark.step(0.001, 0)
         for point in points:
             point.update(sparks)
         bottom.show()
