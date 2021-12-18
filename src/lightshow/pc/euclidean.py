@@ -98,7 +98,7 @@ class Spark(Coordinate):
 
 
 class Sparks:
-    def __init__(self, collection) -> None:
+    def __init__(self, collection):
         self.collection = collection
 
     def __iter__(self):
@@ -106,9 +106,17 @@ class Sparks:
             yield i
 
     def prune(self):
+        # remove sparks considered out of bounds
         self.collection = [
             c for c in self.collection if all(-0.5 < a < 1.5 for a in (c.y, c.x))
         ]
+
         if random.random() > 0.85:
             new_spark = Spark(random.choice(COLORS), random.random(), -0.5)
             self.collection.append(new_spark)
+
+        # cap number of sparks
+        # so we don't run into memory issues
+        if len(self.collection) > 100:
+            self.collection.reverse()
+            self.collection = self.collection[:50]
