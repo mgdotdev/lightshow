@@ -2,7 +2,7 @@ import itertools
 import math
 import random
 
-from lightshow.pc.utils import CIRCUMFERENCE, Offset, color_add
+from lightshow.pc.utils import CIRCUMFERENCE, Offset, color_merge
 
 
 COLORS = [
@@ -12,7 +12,7 @@ COLORS = [
     (255,120,0),
     (255,160,0),
     (255,255,0),
-    (255,-255,255)
+    (255,-128,255)
 ]
 
 
@@ -84,7 +84,7 @@ class Point(Coordinate):
         for spark in sparks:
             dist = euclidean_distance(self, spark)
             color = color_from_distance(spark.color, dist)
-            self.fan[self.index] = color_add(self.fan[self.index], color)
+            self.fan[self.index] = color_merge(self.fan[self.index], color)
 
 
 class Spark(Coordinate):

@@ -1,8 +1,8 @@
 CIRCUMFERENCE = 13
 
 
-def color_add(target, item):
-    raw = tuple(sum(items) for items in zip(target, item))
+def color_merge(target, item):
+    raw = (sum(items) for items in zip(target, item))
     return tuple(
     int(i) 
     if 0 < i <= 255 
