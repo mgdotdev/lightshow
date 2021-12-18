@@ -10,7 +10,6 @@ COLORS = [
     (255,80,0),
     (255,120,0),
     (255,255,0),
-    (255,255,255),
 ]
 
 
@@ -42,7 +41,7 @@ def fire(bottom, top):
         bottom.fill((255,0,0))
         top.fill((255,50,0))
         for spark in sparks:
-            spark.step(dx=0, dy=0.005)
+            spark.step(dx=0, dy=0.05)
         for point in points:
             point.update(sparks)
         bottom.show()
