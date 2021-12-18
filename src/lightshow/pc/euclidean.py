@@ -66,7 +66,7 @@ class Point(Coordinate):
 
 class Spark(Coordinate):
     def __init__(self, color, x, y):
-        super(Point, self).__init__(x, y)
+        super(Spark, self).__init__(x, y)
         self.color = color
 
     def step(self, dx, dy):
