@@ -1,6 +1,6 @@
 import itertools
 import math
-from time import time
+import time
 
 from lightshow.pc.utils import CIRCUMFERENCE, Offset, color_add
 
