@@ -109,4 +109,4 @@ class Sparks:
             c for c in self.collection if all(-0.5 < a < 1.5 for a in (c.y, c.x))
         ]
         if random.random() > 0.95:
-            self.collection.append(Spark(random.choice(COLORS), random.random(), 1.0))
+            self.collection.append(Spark(random.choice(COLORS), random.random(), 0.0))
