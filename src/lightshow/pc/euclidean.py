@@ -1,6 +1,6 @@
 import itertools
 import math
-import time
+import random
 
 from lightshow.pc.utils import CIRCUMFERENCE, Offset, color_add
 
@@ -10,26 +10,31 @@ def fire(bottom, top):
     top = Offset(top, 6)
 
     bottom_points = (
-        Point(bottom, i, *pos_from_center((0.5, 0.2), i, 0.1)) for i in range(CIRCUMFERENCE)
+        Point(bottom, i, *pos_from_center((0.5, 0.2), i, 0.1))
+        for i in range(CIRCUMFERENCE)
     )
 
     top_points = (
-        Point(top, i, *pos_from_center((0.5, 0.8), i, 0.1)) for i in range(CIRCUMFERENCE)
+        Point(top, i, *pos_from_center((0.5, 0.8), i, 0.1))
+        for i in range(CIRCUMFERENCE)
     )
 
     points = list(itertools.chain(bottom_points, top_points))
 
-    sparks = [Spark((255, 0, 0), 0.75, 0.0), Spark((0,0,255), 0.25, 0.0)]
+    sparks = Sparks([Spark((255, 0, 0), 0.75, 1.0), Spark((0, 0, 255), 0.25, 1.0)])
 
     while True:
         bottom.clear()
         top.clear()
         for spark in sparks:
-            spark.step(0, 0.001)
+            spark.step(0, -0.01)
         for point in points:
             point.update(sparks)
         bottom.show()
         top.show()
+
+        sparks.prune()
+
 
 def pos_from_center(position, index, radius):
     angle = ((360 / CIRCUMFERENCE) * index) * (math.pi / 180)
@@ -40,7 +45,7 @@ def pos_from_center(position, index, radius):
 
 def color_from_distance(color, distance):
     """using an exponential decay function to calculate falloff"""
-    return tuple(int(c * math.e**(-25*distance)) for c in color)
+    return tuple(int(c * math.e ** (-25 * distance)) for c in color)
 
 
 def euclidean_distance(point, spark):
@@ -65,6 +70,7 @@ class Point(Coordinate):
             color = color_from_distance(spark.color, dist)
             self.fan[self.index] = color_add(self.fan[self.index], color)
 
+
 class Spark(Coordinate):
     def __init__(self, color, x, y):
         super(Spark, self).__init__(x, y)
@@ -73,3 +79,19 @@ class Spark(Coordinate):
     def step(self, dx, dy):
         self.x += dx
         self.y += dy
+
+
+class Sparks:
+    def __init__(self, collection) -> None:
+        self.collection = collection
+
+    def __iter__(self):
+        for i in self.collection:
+            yield i
+
+    def prune(self):
+        self.collection = [
+            c for c in self.collection if all(-0.5 < a < 1.5 for a in (c.y, c.x))
+        ]
+        if random.random() > 0.95:
+            self.collection.append(Spark((0, 255, 0), random.random(), 1.0))
