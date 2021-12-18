@@ -6,6 +6,8 @@ from lightshow.pc.utils import CIRCUMFERENCE, Offset, color_add
 
 
 COLORS = [
+    (255,20,0),
+    (255,40,0),
     (255,60,0),
     (255,80,0),
     (255,120,0),
@@ -107,6 +109,6 @@ class Sparks:
         self.collection = [
             c for c in self.collection if all(-0.5 < a < 1.5 for a in (c.y, c.x))
         ]
-        if random.random() > 0.8:
+        if random.random() > 0.85:
             new_spark = Spark(random.choice(COLORS), random.random(), -0.5)
             self.collection.append(new_spark)
