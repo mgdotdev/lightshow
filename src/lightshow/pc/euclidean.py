@@ -6,13 +6,11 @@ from lightshow.pc.utils import CIRCUMFERENCE, Offset, color_add
 
 
 COLORS = [
-    (255,0,0),
-    (0,255,0),
-    (0,0,255),
-    (255,255,0),
-    (0,255,255),
-    (255,0,255),
     (255,60,0),
+    (255,80,0),
+    (255,120,0),
+    (255,255,0),
+    (255,255,255),
 ]
 
 
@@ -34,15 +32,15 @@ def fire(bottom, top):
 
     sparks = Sparks(
         [
-            Spark((255, 0, 0), 0.75, 0.0),
-            Spark((0, 255, 0), 0.50, 0.0),
-            Spark((0, 0, 255), 0.25, 0.0),
+            Spark((255, 80, 0), 0.75, 0.0),
+            Spark((255, 80, 0), 0.50, 0.0),
+            Spark((255, 80, 0), 0.25, 0.0),
         ]
     )
 
     while True:
-        bottom.clear()
-        top.clear()
+        bottom.fill((255,0,0))
+        top.fill((255,50,0))
         for spark in sparks:
             spark.step(dx=0, dy=0.005)
         for point in points:
@@ -61,7 +59,7 @@ def pos_from_center(position, index, radius):
 
 def color_from_distance(color, distance):
     """using an exponential decay function to calculate falloff"""
-    return tuple(int(c * math.e ** (-40 * distance)) for c in color)
+    return tuple(int(c * math.e ** (-30 * distance)) for c in color)
 
 
 def euclidean_distance(point, spark):
