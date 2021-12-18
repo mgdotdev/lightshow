@@ -21,8 +21,10 @@ def fire(bottom, top):
     sparks = [Spark((255, 255, 255), i / 10, 0) for i in range(-10, 10)]
 
     while True:
+        bottom.clear()
+        top.clear()
         for spark in sparks:
-            spark.step(0.01, 0)
+            spark.step(0.0001, 0)
         for point in points:
             point.update(sparks)
         bottom.show()

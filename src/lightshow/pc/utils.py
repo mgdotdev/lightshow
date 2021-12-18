@@ -22,6 +22,9 @@ class Offset:
         new = (key + self.offset) % CIRCUMFERENCE
         return self.px[new]
 
+    def clear(self):
+        self.fill((0, 0, 0))
+
     def fill(self, *args, **kwargs):
         self.px.fill(*args, **kwargs)
 
