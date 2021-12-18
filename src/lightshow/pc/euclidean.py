@@ -81,10 +81,12 @@ class Point(Coordinate):
         self.index = index
 
     def update(self, sparks):
+        fan = self.fan
+        index =  self.index
         for spark in sparks:
             dist = euclidean_distance(self, spark)
             color = color_from_distance(spark.color, dist)
-            self.fan[self.index] = color_merge(self.fan[self.index], color)
+            fan[index] = color_merge(fan[index], color)
 
 
 class Spark(Coordinate):
@@ -111,7 +113,7 @@ class Sparks:
             c for c in self.collection if all(-0.5 < a < 1.5 for a in (c.y, c.x))
         ]
 
-        if random.random() > 0.80:
+        if random.random() > 0.75:
             new_spark = Spark(random.choice(COLORS), random.random(), -0.5)
             self.collection.append(new_spark)
 
