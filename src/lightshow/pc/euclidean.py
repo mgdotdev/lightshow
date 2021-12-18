@@ -5,8 +5,8 @@ import time
 from lightshow.pc.utils import CIRCUMFERENCE, Offset, color_add
 
 
-def fire(bottom, top):
-    bottom = Offset(bottom, 3)
+def fire(top, bottom):
+    bottom = Offset(bottom, 9)
     top = Offset(top, 6)
 
     bottom_points = (

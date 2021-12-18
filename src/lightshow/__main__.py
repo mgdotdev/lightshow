@@ -2,10 +2,9 @@ import socket
 import sys
 
 import board
-from lightshow.tools import color_from_string
 import neopixel
 
-
+from .tools import color_from_string
 from .pc.circle import circle as pc_circle
 from .tree.comets import comets as tree_comets
 from .window.circle import circle as window_circle
