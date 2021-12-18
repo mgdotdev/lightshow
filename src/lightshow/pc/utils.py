@@ -2,14 +2,15 @@ CIRCUMFERENCE = 13
 
 
 def color_add(target, item):
-    raw = tuple(sum(a,b) for (a, b) in zip(target, item))
+    raw = tuple(sum(items) for items in zip(target, item))
     return tuple(
-        int(i) 
-        if 0 < i <= 255 
-        else 0 if i < 0
-        else 255
-        for i in raw  
-    )
+    int(i) 
+    if 0 < i <= 255 
+    else 0 if i < 0
+    else 255
+    for i in raw  
+)
+
 
 
 class Offset:
@@ -26,9 +27,6 @@ class Offset:
     def __getitem__(self, key):
         new = (key + self.offset) % CIRCUMFERENCE
         return self.px[new]
-
-    def clear(self):
-        self.fill((0, 0, 0))
 
     def fill(self, *args, **kwargs):
         self.px.fill(*args, **kwargs)
