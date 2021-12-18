@@ -62,7 +62,7 @@ def pos_from_center(position, index, radius):
 
 def color_from_distance(color, distance):
     """using an exponential decay function to calculate falloff"""
-    return tuple(int(c * math.e ** (-20 * distance)) for c in color)
+    return tuple(int(c * math.e ** (-40 * distance)) for c in color)
 
 
 def euclidean_distance(point, spark):
@@ -110,6 +110,6 @@ class Sparks:
         self.collection = [
             c for c in self.collection if all(-0.5 < a < 1.5 for a in (c.y, c.x))
         ]
-        if random.random() > 0.95:
+        if random.random() > 0.8:
             new_spark = Spark(random.choice(COLORS), random.random(), -0.25)
             self.collection.append(new_spark)
