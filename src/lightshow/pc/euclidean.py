@@ -25,13 +25,13 @@ def fire(bottom, top):
         bottom.clear()
         top.clear()
         for spark in sparks:
-            spark.step(0.01, 0)
+            spark.step(0.001, 0)
         for point in points:
             point.update(sparks)
         bottom.show()
         top.show()
         print("repeat")
-        time.sleep(0.5)
+        time.sleep(0.125)
 
 
 def pos_from_center(position, index, radius):
@@ -43,7 +43,7 @@ def pos_from_center(position, index, radius):
 
 def color_from_distance(color, distance):
     """using an exponential decay function to calculate falloff"""
-    return tuple(int(c * math.e**(-10*distance)) for c in color)
+    return tuple(int(c * math.e**(-25*distance)) for c in color)
 
 
 def euclidean_distance(point, spark):
