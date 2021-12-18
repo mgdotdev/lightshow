@@ -6,12 +6,12 @@ from lightshow.pc.utils import CIRCUMFERENCE, Offset, color_merge
 
 
 COLORS = [
-    (255,40,0),
-    (255,60,0),
-    (255,80,0),
-    (255,120,0),
-    (255,160,0),
-    (255,255,0),
+    (255, 40, 0),
+    (255, 60, 0),
+    (255, 80, 0),
+    (255, 120, 0),
+    (255, 160, 0),
+    (255, 255, 0),
 ]
 
 
@@ -40,8 +40,8 @@ def fire(bottom, top):
     )
 
     while True:
-        bottom.fill((255,0,0))
-        top.fill((255,20,0))
+        bottom.fill((255, 0, 0))
+        top.fill((255, 20, 0))
         for spark in sparks:
             spark.step(dx=0, dy=0.02)
         for point in points:

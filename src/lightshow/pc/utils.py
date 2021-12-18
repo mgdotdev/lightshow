@@ -1,21 +1,9 @@
 CIRCUMFERENCE = 13
 
+
 def color_merge(target, item):
-    return tuple(
-        int(i) if (i := sum((a, b))) < 255 else 255 for (a, b) in zip(target, item)
-    )
-
-
-# def color_merge(target, item):
-#     raw = (sum(items) for items in zip(target, item))
-#     return tuple(
-#     int(i) 
-#     if 0 < i <= 255 
-#     else 0 if i < 0
-#     else 255
-#     for i in raw  
-# )
-
+    raw = (sum(items) for items in zip(target, item))
+    return tuple(0 if i <= 0 else 255 if i >= 255 else int(i) for i in raw)
 
 
 class Offset:
