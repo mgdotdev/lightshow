@@ -19,7 +19,7 @@ def fire(bottom, top):
 
     points = list(itertools.chain(bottom_points, top_points))
 
-    sparks = [Spark((255, 255, 255), i / 10, 0) for i in range(-10, 10)]
+    sparks = [Spark((10, 10, 10), i / 10, 0) for i in range(-10, 10)]
 
     while True:
         bottom.clear()
@@ -66,6 +66,8 @@ class Point(Coordinate):
             dist = euclidean_distance(self, spark)
             color = color_from_distance(spark.color, dist)
             self.fan[self.index] = color_add(self.fan[self.index], color)
+            print(f"DISTANCE: {dist}")
+            print(f"   COLOR: {color}")
 
 
 class Spark(Coordinate):
@@ -76,3 +78,4 @@ class Spark(Coordinate):
     def step(self, dx, dy):
         self.x += dx
         self.y += dy
+        print(f"COORDINATES: {(self.x, self.y)}")
