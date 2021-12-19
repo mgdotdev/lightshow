@@ -82,7 +82,7 @@ def _test(bottom, top, points, profile):
         bottom.fill((0, 0, 0))
         top.fill((0, 0, 0))
         for spark in sparks:
-            spark.step(dx=0, dy=0.01)
+            spark.step(dx=0, dy=0.001)
         for point in points:
             point.update(sparks)
         bottom.show()
