@@ -92,7 +92,7 @@ class Point(Coordinate):
         for spark in sparks:
             dist = _euclidean_distance(self.x, spark.x, self.y, spark.y)
             color = _color_from_distance(spark.color, dist, -20)
-            fan[index] = _color_merge(fan[index], color)
+            fan[index] = _color_merge(tuple(fan[index]), color)
 
 
 class Spark(Coordinate):
