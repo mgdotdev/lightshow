@@ -54,7 +54,7 @@ def fire(bottom, top, profile="h"):
         bottom.fill(bfill)
         top.fill(tfill)
         for spark in sparks:
-            spark.step(dx=0, dy=0.03)
+            spark.step(dx=0, dy=0.02)
         for point in points:
             point.update(sparks)
         bottom.show()
@@ -131,6 +131,5 @@ class Sparks:
 
         # cap number of sparks
         # so we don't run into memory issues
-        if len(self.collection) > 100:
-            self.collection.reverse()
-            self.collection = self.collection[:50]
+        if len(self.collection) > 1000:
+            self.collection = self.collection[-1000:]
