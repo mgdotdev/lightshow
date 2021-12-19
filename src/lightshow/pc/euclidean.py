@@ -13,6 +13,8 @@ WEIGHT = -20
 
 HOT_COLORS = [
     (255, 0, 0),
+    (255, 10, 0),
+    (255, 20, 0),
     (255, 40, 0),
     (255, 80, 0),
     (255, 120, 0),
@@ -41,9 +43,9 @@ def fire(bottom, top, profile="h"):
     top = Offset(top, 6)
 
     if profile == "h":
-        colors, tfill, bfill = HOT_COLORS, (255, 20, 0), (255, 0, 0)
+        colors = HOT_COLORS
     elif profile == "c":
-        colors, tfill, bfill = COLD_COLORS, (0, 0, 0), (0, 0, 0)
+        colors = COLD_COLORS
 
     bottom_points = (
         Point(bottom, i, *pos_from_center((0.5, 0.25), i, 0.2))
@@ -60,8 +62,8 @@ def fire(bottom, top, profile="h"):
 
     sparks = Sparks(colors)
     while True:
-        bottom.fill(bfill)
-        top.fill(tfill)
+        bottom.clear()
+        top.clear()
         for spark in sparks:
             spark.step(dx=0, dy=0.025)
         for point in points:
@@ -81,12 +83,12 @@ def _test(bottom, top, points, profile):
     ]
     sparks = Sparks(colors=TEST_COLORS, collection=collection)
     while True:
-        bottom.fill((0, 0, 0))
-        top.fill((0, 0, 0))
+        bottom.clear()
+        top.clear()
         for spark in sparks:
             spark.step(dx=0, dy=0.001)
         for point in points:
-            point.weight = -45
+            point.weight = -30
             point.update(sparks)
         bottom.show()
         top.show()
