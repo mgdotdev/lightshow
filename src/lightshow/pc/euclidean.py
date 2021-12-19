@@ -54,7 +54,7 @@ def fire(bottom, top, profile="h"):
         bottom.fill(bfill)
         top.fill(tfill)
         for spark in sparks:
-            spark.step(dx=0, dy=0.02)
+            spark.step(dx=0, dy=0.025)
         for point in points:
             point.update(sparks)
         bottom.show()
