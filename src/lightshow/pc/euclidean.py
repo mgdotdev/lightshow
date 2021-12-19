@@ -37,6 +37,27 @@ TEST_COLORS = [
 ]
 
 
+def _test(bottom, top, points, profile):
+    if not profile == "test":
+        return
+    collection = [
+        Spark((0, 255, 0), 0.5, -0.5),
+        Spark((255, 0, 0), 0.25, -0.5),
+        Spark((0, 0, 255), 0.75, -0.5),
+    ]
+    sparks = Sparks(colors=TEST_COLORS, collection=collection)
+    while True:
+        bottom.clear()
+        top.clear()
+        for spark in sparks:
+            spark.step(dx=0, dy=0.001)
+        for point in points:
+            point.weight = -30
+            point.update(sparks)
+        bottom.show()
+        top.show()
+
+
 def fire(bottom, top, profile="h"):
     bottom = Offset(bottom, 3)
     top = Offset(top, 6)
@@ -70,27 +91,6 @@ def fire(bottom, top, profile="h"):
         bottom.show()
         top.show()
         sparks.prune()
-
-
-def _test(bottom, top, points, profile):
-    if not profile == "test":
-        return
-    collection = [
-        Spark((0, 255, 0), 0.5, -0.5),
-        Spark((255, 0, 0), 0.25, -0.5),
-        Spark((0, 0, 255), 0.75, -0.5),
-    ]
-    sparks = Sparks(colors=TEST_COLORS, collection=collection)
-    while True:
-        bottom.clear()
-        top.clear()
-        for spark in sparks:
-            spark.step(dx=0, dy=0.001)
-        for point in points:
-            point.weight = -30
-            point.update(sparks)
-        bottom.show()
-        top.show()
 
 
 def pos_from_center(position, index, radius):

@@ -1,5 +1,6 @@
 CIRCUMFERENCE = 13
 
+
 class Offset:
     """Allows us to pretend that the fan circle starts at zero at the bottom."""
 
@@ -23,6 +24,7 @@ class Offset:
 
     def clear(self):
         self.px.fill((0, 0, 0))
+
 
 class ColumnUtil:
     def __init__(self, bottom, top):
