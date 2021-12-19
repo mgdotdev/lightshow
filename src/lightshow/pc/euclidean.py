@@ -9,6 +9,8 @@ from .extensions.LightshowTools import (
     _color_from_distance,
 )
 
+WEIGHT = -20
+
 HOT_COLORS = [
     (255, 0, 0),
     (255, 40, 0),
@@ -84,6 +86,7 @@ def _test(bottom, top, points, profile):
         for spark in sparks:
             spark.step(dx=0, dy=0.001)
         for point in points:
+            point.weight = -45
             point.update(sparks)
         bottom.show()
         top.show()
@@ -107,13 +110,15 @@ class Point(Coordinate):
         super(Point, self).__init__(x, y)
         self.fan = fan
         self.index = index
+        self.weight = WEIGHT
 
     def update(self, sparks):
         fan = self.fan
         index = self.index
+        weight = self.weight
         for spark in sparks:
             dist = _euclidean_distance(self.x, self.y, spark.x, spark.y)
-            color = _color_from_distance(spark.color, dist, -20)
+            color = _color_from_distance(spark.color, dist, weight)
             fan[index] = _color_merge(fan[index], color)
 
 
