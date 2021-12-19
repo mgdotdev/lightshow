@@ -16,14 +16,11 @@ HOT_COLORS = [
 ]
 
 COLD_COLORS = [
-    (0, 0, 255), 
-    (0, 40, 255),
-    (0, 80, 255),
-    (0, 120, 255),
-    (0, 255, 255), 
-    (0, 160, 255),
-    (0, 200, 255),
+    (0, 0, 255),
+    (0, 128, 255),
     (0, 255, 255),
+    (128, 0, 255),
+    (128, 0, 255),
 ]
 
 
@@ -34,7 +31,7 @@ def fire(bottom, top, profile="h"):
     if profile == "h":
         colors, tfill, bfill = HOT_COLORS, (255, 20, 0), (255, 0, 0)
     elif profile == "c":
-        colors, tfill, bfill = COLD_COLORS, (0,0,255), (0,20,255)
+        colors, tfill, bfill = COLD_COLORS, (0, 0, 255), (0, 20, 255)
 
     bottom_points = (
         Point(bottom, i, *pos_from_center((0.5, 0.25), i, 0.4))
@@ -91,7 +88,7 @@ class Point(Coordinate):
 
     def update(self, sparks):
         fan = self.fan
-        index =  self.index
+        index = self.index
         for spark in sparks:
             dist = euclidean_distance(self, spark)
             color = color_from_distance(spark.color, dist)
@@ -124,11 +121,13 @@ class Sparks:
         ]
 
         if random.random() > 0.80:
-            self.collection.extend([
-                Spark(random.choice(self.colors), random.random(), -0.5), 
-                Spark(random.choice(self.colors), random.random(), -0.5),
-                Spark(random.choice(self.colors), random.random(), -0.5),
-            ])
+            self.collection.extend(
+                [
+                    Spark(random.choice(self.colors), random.random(), -0.5),
+                    Spark(random.choice(self.colors), random.random(), -0.5),
+                    Spark(random.choice(self.colors), random.random(), -0.5),
+                ]
+            )
 
         # cap number of sparks
         # so we don't run into memory issues
