@@ -1,5 +1,11 @@
 __pycache__/
 .sandbox/
+.pytest_cache/
+.vscode/
+build/
+venv/
 
 nohup.out
+
+*.so
 *.egg-info

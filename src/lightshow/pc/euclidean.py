@@ -2,8 +2,12 @@ import itertools
 import math
 import random
 
-from lightshow.pc.utils import CIRCUMFERENCE, Offset, color_merge
-
+from .utils import CIRCUMFERENCE, Offset
+from .extensions.LightshowTools import (
+    _euclidean_distance,
+    _color_merge,
+    _color_from_distance,
+)
 
 HOT_COLORS = [
     (255, 0, 0),
@@ -65,13 +69,9 @@ def pos_from_center(position, index, radius):
     return (position[0] - dx, position[1] - dy)
 
 
-def color_from_distance(color, distance):
+def color_from_distance(color, distance, weight):
     """using an exponential decay function to calculate falloff"""
-    return tuple(int(c * math.e ** (-20 * distance)) for c in color)
-
-
-def euclidean_distance(point, spark):
-    return math.sqrt((point.x - spark.x) ** 2 + (point.y - spark.y) ** 2)
+    return tuple(int(c * math.e ** (weight * distance)) for c in color)
 
 
 class Coordinate:
@@ -90,9 +90,9 @@ class Point(Coordinate):
         fan = self.fan
         index = self.index
         for spark in sparks:
-            dist = euclidean_distance(self, spark)
-            color = color_from_distance(spark.color, dist)
-            fan[index] = color_merge(fan[index], color)
+            dist = _euclidean_distance(self.x, spark.x, self.y, spark.y)
+            color = _color_from_distance(spark.color, dist, -20)
+            fan[index] = _color_merge(fan[index], color)
 
 
 class Spark(Coordinate):

@@ -1,11 +1,18 @@
 import os.path
 
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Extension
 
 here = os.path.dirname(os.path.abspath(__file__))
 
 with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
+
+extensions = [
+    Extension(
+        "lightshow.pc.extensions.LightshowTools",
+        [os.path.join("src", "lightshow", "pc", "extensions", "LightshowTools.c")],
+    )
+]
 
 setup(
     name="lightshow",
@@ -26,4 +33,5 @@ setup(
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     tests_require=["pytest"],
+    ext_modules=extensions,
 )
