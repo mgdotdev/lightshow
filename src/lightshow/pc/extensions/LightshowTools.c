@@ -1,7 +1,7 @@
 #include <Python.h>
 #include <math.h>
 
-int _truncate(int item) {
+long int _truncate(long int item) {
     if (item > 255) {
         item = 255;
     } else if (item < 0) {
@@ -38,21 +38,20 @@ static PyObject* _color_merge(PyObject *self, PyObject *args) {
         return NULL;
     }
 
-    int t_r, t_g, t_b;
-    if (!PyArg_ParseTuple(target, "iii", &t_r, &t_g, &t_b)) {
+    long int t_r = PyLong_AsLong(PyList_GetItem(target, 0));
+    long int t_g = PyLong_AsLong(PyList_GetItem(target, 1));
+    long int t_b = PyLong_AsLong(PyList_GetItem(target, 2));
+
+    long int i_r, i_g, i_b;
+    if (!PyArg_ParseTuple(item, "lll", &i_r, &i_g, &i_b)) {
         return NULL;
     }
 
-    int i_r, i_g, i_b;
-    if (!PyArg_ParseTuple(item, "iii", &i_r, &i_g, &i_b)) {
-        return NULL;
-    }
+    long int r = _truncate(t_r + i_r);
+    long int g = _truncate(t_g + i_g);
+    long int b = _truncate(t_b + i_b);
 
-    int r = _truncate(t_r + i_r);
-    int g = _truncate(t_g + i_g);
-    int b = _truncate(t_b + i_b);
-
-    return Py_BuildValue("iii", r, g, b);
+    return Py_BuildValue("lll", r, g, b);
 }
 
 

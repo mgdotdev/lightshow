@@ -15,7 +15,8 @@ ascends counterclockwise
 import time
 import itertools
 
-from .utils import DualColumn, Offset, SingleColumn, color_merge
+from .utils import DualColumn, Offset, SingleColumn
+from .extensions.LightshowTools import _color_merge
 
 from ..tools import circle_indexes, color_fader
 
@@ -46,8 +47,8 @@ def dual_pulse(px1, px2):
         rgt_idx = circle_indexes(i, span, len(cols), offset=6)
         cols.clear()
         for count, (l_i, r_i) in enumerate(zip(lft_idx, rgt_idx), start=-1 * span):
-            cols.left[l_i] = color_merge(cols.left[l_i], cfuncs[0](count, span))
-            cols.right[r_i] = color_merge(cols.right[r_i], cfuncs[1](count, span))
+            cols.left[l_i] = _color_merge(cols.left[l_i], cfuncs[0](count, span))
+            cols.right[r_i] = _color_merge(cols.right[r_i], cfuncs[1](count, span))
         cols.show()
         time.sleep(0.05)
 
@@ -76,7 +77,7 @@ def quad_pulse(px1, px2, profile):
 
         for lft_idx, rgt_idx, lft_c, rgt_c in zip(idxs, idxs, cfuncs, cfuncs):
             for count, (l_i, r_i) in enumerate(zip(lft_idx, rgt_idx), start=-1 * span):
-                cols.left[l_i] = color_merge(cols.left[l_i], lft_c(count, span))
-                cols.right[r_i] = color_merge(cols.right[r_i], rgt_c(count, span))
+                cols.left[l_i] = _color_merge(cols.left[l_i], lft_c(count, span))
+                cols.right[r_i] = _color_merge(cols.right[r_i], rgt_c(count, span))
         cols.show()
         time.sleep(0.05)

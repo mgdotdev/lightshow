@@ -69,11 +69,6 @@ def pos_from_center(position, index, radius):
     return (position[0] - dx, position[1] - dy)
 
 
-def color_from_distance(color, distance, weight):
-    """using an exponential decay function to calculate falloff"""
-    return tuple(int(c * math.e ** (weight * distance)) for c in color)
-
-
 class Coordinate:
     def __init__(self, x, y):
         self.x = x
@@ -92,7 +87,7 @@ class Point(Coordinate):
         for spark in sparks:
             dist = _euclidean_distance(self.x, spark.x, self.y, spark.y)
             color = _color_from_distance(spark.color, dist, -20)
-            fan[index] = _color_merge(tuple(fan[index]), color)
+            fan[index] = _color_merge(fan[index], color)
 
 
 class Spark(Coordinate):
