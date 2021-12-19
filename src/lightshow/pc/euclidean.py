@@ -73,8 +73,8 @@ def _test(bottom, top, points, profile):
     if not profile == "test":
         return
     collection = [
-        Spark((255, 0, 0), 0.25, -0.5),
         Spark((0, 255, 0), 0.5, -0.5),
+        Spark((255, 0, 0), 0.25, -0.5),
         Spark((0, 0, 255), 0.75, -0.5),
     ]
     sparks = Sparks(colors=TEST_COLORS, collection=collection)
@@ -112,7 +112,7 @@ class Point(Coordinate):
         fan = self.fan
         index = self.index
         for spark in sparks:
-            dist = _euclidean_distance(self.x, spark.x, self.y, spark.y)
+            dist = _euclidean_distance(self.x, self.y, spark.x, spark.y)
             color = _color_from_distance(spark.color, dist, -20)
             fan[index] = _color_merge(fan[index], color)
 
