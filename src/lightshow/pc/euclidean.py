@@ -120,7 +120,7 @@ class Sparks:
             c for c in self.collection if all(-0.5 < a < 1.5 for a in (c.y, c.x))
         ]
 
-        if random.random() > 0.80:
+        if random.random() > 0.80 and len(self.collection) < 1000:
             self.collection.extend(
                 [
                     Spark(random.choice(self.colors), random.random(), -0.5),
@@ -128,8 +128,3 @@ class Sparks:
                     Spark(random.choice(self.colors), random.random(), -0.5),
                 ]
             )
-
-        # cap number of sparks
-        # so we don't run into memory issues
-        if len(self.collection) > 1000:
-            self.collection = self.collection[-1000:]
