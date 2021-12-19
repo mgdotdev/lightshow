@@ -1,11 +1,5 @@
 CIRCUMFERENCE = 13
 
-
-def color_merge(target, item):
-    raw = (sum(items) for items in zip(target, item))
-    return tuple(0 if i <= 0 else 255 if i >= 255 else int(i) for i in raw)
-
-
 class Offset:
     """Allows us to pretend that the fan circle starts at zero at the bottom."""
 
@@ -27,6 +21,8 @@ class Offset:
     def show(self, *args, **kwargs):
         self.px.show(*args, **kwargs)
 
+    def clear(self):
+        self.px.fill((0, 0, 0))
 
 class ColumnUtil:
     def __init__(self, bottom, top):
