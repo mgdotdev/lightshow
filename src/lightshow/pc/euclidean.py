@@ -46,12 +46,12 @@ def fire(bottom, top, profile="h"):
         colors, tfill, bfill = COLD_COLORS, (0, 0, 0), (0, 0, 0)
 
     bottom_points = (
-        Point(bottom, i, *pos_from_center((0.5, 0.25), i, 0.4))
+        Point(bottom, i, *pos_from_center((0.5, 0.25), i, 0.2))
         for i in range(CIRCUMFERENCE)
     )
 
     top_points = (
-        Point(top, i, *pos_from_center((0.5, 0.75), i, 0.4))
+        Point(top, i, *pos_from_center((0.5, 0.75), i, 0.2))
         for i in range(CIRCUMFERENCE)
     )
 
