@@ -5,6 +5,7 @@ import random
 import requests
 
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from .utils import CIRCUMFERENCE, Offset
 from .extensions.LightshowTools import (
@@ -101,7 +102,7 @@ class ColorProfile:
         (128, 0, 255),
         (255, 0, 255),
     ]
-    
+
     def __init__(self, profile):
         self.profile = profile
         self.current = datetime.now()
@@ -115,23 +116,22 @@ class ColorProfile:
         ).json()
 
     @property
-    def metadata(self): 
+    def metadata(self):
         if not hasattr(self, "_metadata"):
             self.current = datetime.now()
             _metadata = ColorProfile._request_metadata(self.ip)
             self._metadata = (
-                datetime.fromisoformat(_metadata['results']['sunrise']),
-                datetime.fromisoformat(_metadata['results']['sunset'])
+                datetime.fromisoformat(_metadata["results"]["sunrise"][:-6]),
+                datetime.fromisoformat(_metadata["results"]["sunset"][:-6]),
             )
         elif (datetime.now() - self.current).days >= 1:
             self.current = datetime.now()
             _metadata = ColorProfile._request_metadata(self.ip)
             self._metadata = (
-                datetime.fromisoformat(_metadata['results']['sunrise']),
-                datetime.fromisoformat(_metadata['results']['sunset'])
+                datetime.fromisoformat(_metadata["results"]["sunrise"][:-6]),
+                datetime.fromisoformat(_metadata["results"]["sunset"][:-6]),
             )
         return self._metadata
-
 
     def random_selection(self):
         if self.profile == "h":
@@ -143,7 +143,7 @@ class ColorProfile:
 
     def _colors_from_datetime(self):
         sunrise, sunset = self.metadata
-        now = datetime.now(sunrise.tzinfo)
+        now = datetime.now()
         if sunrise <= now <= sunset:
             return random.choice(ColorProfile.HOT_COLORS)
         return random.choice(ColorProfile.COLD_COLORS)
