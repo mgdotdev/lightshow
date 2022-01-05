@@ -2,6 +2,10 @@ import itertools
 import math
 import random
 
+import requests
+
+from datetime import datetime
+
 from .utils import CIRCUMFERENCE, Offset
 from .extensions.LightshowTools import (
     _euclidean_distance,
@@ -10,31 +14,6 @@ from .extensions.LightshowTools import (
 )
 
 WEIGHT = -20
-
-HOT_COLORS = [
-    (255, 0, 0),
-    (255, 5, 0),
-    (255, 10, 0),
-    (255, 20, 0),
-    (255, 40, 0),
-    (255, 80, 0),
-    (255, 120, 0),
-    (255, 160, 0),
-]
-
-COLD_COLORS = [
-    (0, 0, 255),
-    (0, 128, 255),
-    (0, 255, 255),
-    (128, 0, 255),
-    (255, 0, 255),
-]
-
-TEST_COLORS = [
-    (255, 0, 0),
-    (0, 255, 0),
-    (0, 0, 255),
-]
 
 
 def _test(bottom, top, points, profile):
@@ -45,7 +24,7 @@ def _test(bottom, top, points, profile):
         Spark((255, 0, 0), 0.25, -0.5),
         Spark((0, 0, 255), 0.75, -0.5),
     ]
-    sparks = Sparks(colors=TEST_COLORS, collection=collection)
+    sparks = Sparks(colors=None, collection=collection)
     while True:
         bottom.clear()
         top.clear()
@@ -58,14 +37,11 @@ def _test(bottom, top, points, profile):
         top.show()
 
 
-def fire(bottom, top, profile="h"):
+def fire(bottom, top, profile=None):
     bottom = Offset(bottom, 3)
     top = Offset(top, 6)
 
-    if profile == "h":
-        colors = HOT_COLORS
-    elif profile == "c":
-        colors = COLD_COLORS
+    colors = ColorProfile(profile)
 
     bottom_points = (
         Point(bottom, i, *pos_from_center((0.5, 0.25), i, 0.2))
@@ -104,6 +80,73 @@ class Coordinate:
     def __init__(self, x, y):
         self.x = x
         self.y = y
+
+
+class ColorProfile:
+    HOT_COLORS = [
+        (255, 0, 0),
+        (255, 5, 0),
+        (255, 10, 0),
+        (255, 20, 0),
+        (255, 40, 0),
+        (255, 80, 0),
+        (255, 120, 0),
+        (255, 160, 0),
+    ]
+
+    COLD_COLORS = [
+        (0, 0, 255),
+        (0, 128, 255),
+        (0, 255, 255),
+        (128, 0, 255),
+        (255, 0, 255),
+    ]
+    
+    def __init__(self, profile):
+        self.profile = profile
+        self.current = datetime.now()
+        self.ip = requests.get("https://ipinfo.io").json()
+
+    @staticmethod
+    def _request_metadata(ip):
+        loc = ip["loc"].split(",")
+        return requests.get(
+            "https://api.sunrise-sunset.org/json?lat={}&lng{}&formatted=0".format(*loc)
+        ).json()
+
+    @property
+    def metadata(self): 
+        if not hasattr(self, "_metadata"):
+            self.current = datetime.now()
+            _metadata = ColorProfile._request_metadata(self.ip)
+            self._metadata = (
+                datetime.fromisoformat(_metadata['results']['sunrise']),
+                datetime.fromisoformat(_metadata['results']['sunset'])
+            )
+        elif (datetime.now() - self.current).days >= 1:
+            self.current = datetime.now()
+            _metadata = ColorProfile._request_metadata(self.ip)
+            self._metadata = (
+                datetime.fromisoformat(_metadata['results']['sunrise']),
+                datetime.fromisoformat(_metadata['results']['sunset'])
+            )
+        return self._metadata
+
+
+    def random_selection(self):
+        if self.profile == "h":
+            return random.choice(ColorProfile.HOT_COLORS)
+        elif self.profile == "c":
+            return random.choice(ColorProfile.COLD_COLORS)
+        else:
+            return self._colors_from_datetime()
+
+    def _colors_from_datetime(self):
+        sunrise, sunset = self.metadata
+        now = datetime.now(sunrise.tzinfo)
+        if sunrise <= now <= sunset:
+            return random.choice(ColorProfile.HOT_COLORS)
+        return random.choice(ColorProfile.COLD_COLORS)
 
 
 class Point(Coordinate):
@@ -151,8 +194,8 @@ class Sparks:
         if random.random() > 0.80 and len(self.collection) < 1000:
             self.collection.extend(
                 [
-                    Spark(random.choice(self.colors), random.random(), -0.5),
-                    Spark(random.choice(self.colors), random.random(), -0.5),
-                    Spark(random.choice(self.colors), random.random(), -0.5),
+                    Spark(self.colors.random_selection(), random.random(), -0.5),
+                    Spark(self.colors.random_selection(), random.random(), -0.5),
+                    Spark(self.colors.random_selection(), random.random(), -0.5),
                 ]
             )

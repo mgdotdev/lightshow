@@ -52,7 +52,7 @@ def main():
             if options:
                 profile, *options = options
             else:
-                profile = "h"
+                profile = None
             pc_fire(px1, px2, profile)
         elif effect == "circle":
             if options:
