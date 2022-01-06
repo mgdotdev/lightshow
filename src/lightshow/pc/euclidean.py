@@ -28,11 +28,11 @@ def _test(bottom, top, points, profile):
     sparks = Sparks(colors=None, collection=collection)
     for point in points:
         point.weight = -30
-    dy = 0.005
+    dy = 0.002
     while True:
         bottom.clear()
         top.clear()
-        if not any(-0.1 <= a <= 1.1 for c in sparks.collection for a in (c.y, c.x)):
+        if not all(-0.1 <= a <= 1.1 for c in sparks.collection for a in (c.y, c.x)):
             dy = -dy
         for spark in sparks:
             spark.step(dx=0, dy=dy)
