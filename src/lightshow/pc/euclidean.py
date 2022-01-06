@@ -32,7 +32,7 @@ def _test(bottom, top, points, profile):
     while True:
         bottom.clear()
         top.clear()
-        if not all(0 <= a <= 1.0 for c in sparks.collection for a in (c.y, c.x)):
+        if not any(-0.1 <= a <= 1.1 for c in sparks.collection for a in (c.y, c.x)):
             dy = -dy
         for spark in sparks:
             spark.step(dx=0, dy=dy)
