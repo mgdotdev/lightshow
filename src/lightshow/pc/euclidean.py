@@ -130,8 +130,8 @@ class ColorProfile:
     @property
     def metadata(self):
         if (
-            not hasattr(self, "_metadata") 
-            or (datetime.now() - self.current).days >= 1
+            datetime.now().day != self.current.day
+            or not hasattr(self, "_metadata")
         ):
             self.current = datetime.now()
             _metadata = ColorProfile._request_metadata(self.ip)
