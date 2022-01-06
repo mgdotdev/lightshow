@@ -21,18 +21,22 @@ def _test(bottom, top, points, profile):
     if not profile == "test":
         return
     collection = [
-        Spark((0, 255, 0), 0.5, -0.5),
-        Spark((255, 0, 0), 0.25, -0.5),
-        Spark((0, 0, 255), 0.75, -0.5),
+        Spark((0, 255, 0), 0.5, 0),
+        Spark((255, 0, 0), 0.25, 0),
+        Spark((0, 0, 255), 0.75, 0),
     ]
     sparks = Sparks(colors=None, collection=collection)
+    for point in points:
+        point.weight = -30
+    dy = 0.005
     while True:
         bottom.clear()
         top.clear()
+        if not all(0 <= a <= 1.0 for c in sparks.collection for a in (c.y, c.x)):
+            dy = -dy
         for spark in sparks:
-            spark.step(dx=0, dy=0.001)
+            spark.step(dx=0, dy=dy)
         for point in points:
-            point.weight = -30
             point.update(sparks)
         bottom.show()
         top.show()
@@ -115,6 +119,14 @@ class ColorProfile:
             "https://api.sunrise-sunset.org/json?lat={}&lng{}&formatted=0".format(*loc)
         ).json()
 
+    def _colors_from_datetime(self):
+        sunrise, sunset = self.metadata
+        now = datetime.now()
+        if sunrise <= now <= sunset:
+            return random.choice(ColorProfile.HOT_COLORS)
+        else:
+            return random.choice(ColorProfile.COLD_COLORS)
+
     @property
     def metadata(self):
         if (
@@ -136,13 +148,6 @@ class ColorProfile:
             return random.choice(ColorProfile.COLD_COLORS)
         else:
             return self._colors_from_datetime()
-
-    def _colors_from_datetime(self):
-        sunrise, sunset = self.metadata
-        now = datetime.now()
-        if sunrise <= now <= sunset:
-            return random.choice(ColorProfile.HOT_COLORS)
-        return random.choice(ColorProfile.COLD_COLORS)
 
 
 class Point(Coordinate):
