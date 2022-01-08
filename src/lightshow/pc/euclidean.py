@@ -53,9 +53,11 @@ def _clock_hook_closure():
 
 
 def _strike_on_hour(sparks, points, hour):
-    _taper_sparks(sparks, points)
+    fans = set(p.fan for p in points)
     appends = 0
     current = datetime.now()
+
+    _taper_sparks(sparks, points, fans)
     while appends != hour:
         now = datetime.now()
         if current.second != now.second:
@@ -66,12 +68,11 @@ def _strike_on_hour(sparks, points, hour):
             ])
             appends += 1
             current = now
-        _step_sparks(sparks, points, increment=(0, 0.01))
-    _taper_sparks(sparks, points, increment=(0, 0.01))
+        _step_sparks(sparks, points, fans, increment=(0, 0.01))
+    _taper_sparks(sparks, points, fans, increment=(0, 0.01))
 
 
-def _step_sparks(sparks, points, increment=(0, 0.025)):
-    fans = set(p.fan for p in points)
+def _step_sparks(sparks, points, fans, increment=(0, 0.025)):
     for fan in fans:
         fan.clear()
     for spark in sparks:
@@ -82,9 +83,9 @@ def _step_sparks(sparks, points, increment=(0, 0.025)):
         fan.show()
 
 
-def _taper_sparks(sparks, points, increment=(0, 0.025)):
+def _taper_sparks(sparks, points, fans, increment=(0, 0.025)):
     while sparks.collection:
-        _step_sparks(sparks, points, increment=increment)
+        _step_sparks(sparks, points, fans, increment=increment)
         sparks.collection = _pruned_collection(sparks.collection)
 
 
@@ -117,7 +118,7 @@ def fire(bottom, top, profile=None):
     _clock_hook = _clock_hook_closure()
 
     while True:
-        _step_sparks(sparks, points)
+        _step_sparks(sparks, points, (bottom, top))
         sparks.prune()
         _clock_hook(sparks, points)
 
