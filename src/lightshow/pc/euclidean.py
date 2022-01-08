@@ -21,26 +21,18 @@ INCREMENT = (0, 0.025)
 def _test(bottom, top, points, profile):
     if not profile == "test":
         return
+
     collection = [
         Spark((0, 255, 0), 0.5, 0),
         Spark((255, 0, 0), 0.25, 0),
         Spark((0, 0, 255), 0.75, 0),
     ]
     sparks = Sparks(colors=None, collection=collection)
-    for point in points:
-        point.weight = -30
     dy = 0.002
     while True:
-        bottom.clear()
-        top.clear()
         if not all(-0.1 <= a <= 1.1 for c in sparks.collection for a in (c.y, c.x)):
             dy = -dy
-        for spark in sparks:
-            spark.step(dx=0, dy=dy)
-        for point in points:
-            point.update(sparks)
-        bottom.show()
-        top.show()
+        _step_sparks(sparks, points, (bottom, top), increment=(0, dy), weight=-30)
 
 
 def _clock_hook_closure():
@@ -106,7 +98,7 @@ def _fade_points(sparks, points, fans, current):
             p.fan[p.index] = tuple((1 - ts) * c for c in p.fan[p.index])
         for fan in fans:
             fan.show()
-    sparks.collection = []
+    sparks.empty()
 
 
 def _replenish_sparks(sparks):
@@ -270,3 +262,6 @@ class Sparks:
 
     def add(self, *args):
         self.collection.extend(args)
+
+    def empty(self):
+        self.collection = []
