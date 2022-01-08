@@ -59,26 +59,27 @@ def _strike_on_hour(sparks, points, current):
     _taper_sparks(sparks, points, fans)
     while appends != hour:
         now = datetime.now()
-        if current.second != now.second:
-            sparks.collection.extend([
+        if all(c.y > 0.5 for c in sparks.collection):
+            sparks.add(
                 Spark((255, 255, 255), 0.5, -0.5),
                 Spark((255, 255, 255), 0.25, -0.5),
                 Spark((255, 255, 255), 0.75, -0.5),
-            ])
+            )
             appends += 1
             current = now
-        _step_sparks(sparks, points, fans, increment=(0, 0.004))
-        sparks.collection = _pruned_collection(sparks.collection)
+        _step_sparks(sparks, points, fans, increment=(0, 0.004), weight=-10)
+        sparks.prune()
+        
     _taper_sparks(sparks, points, fans, increment=(0, 0.004))
 
 
-def _step_sparks(sparks, points, fans, increment=(0, 0.025)):
+def _step_sparks(sparks, points, fans, increment=(0, 0.025), weight=WEIGHT):
     for fan in fans:
         fan.clear()
     for spark in sparks:
         spark.step(*increment)
     for point in points:
-        point.update(sparks)
+        point.update(sparks, weight=weight)
     for fan in fans:
         fan.show()
 
@@ -86,26 +87,17 @@ def _step_sparks(sparks, points, fans, increment=(0, 0.025)):
 def _taper_sparks(sparks, points, fans, increment=(0, 0.025)):
     while sparks.collection:
         _step_sparks(sparks, points, fans, increment=increment)
-        sparks.collection = _pruned_collection(sparks.collection)
+        sparks.prune()
 
 
 def _replenish_sparks(sparks):
-    sparks.collection = _pruned_collection(sparks.collection)
-
+    sparks.prune()
     if random.random() > 0.80 and len(sparks.collection) < 1000:
-        sparks.collection.extend(
-            [
-                Spark(sparks.colors.random_selection(), random.random(), -0.5),
-                Spark(sparks.colors.random_selection(), random.random(), -0.5),
-                Spark(sparks.colors.random_selection(), random.random(), -0.5),
-            ]
+        sparks.add(
+            Spark(sparks.colors.random_selection(), random.random(), -0.5),
+            Spark(sparks.colors.random_selection(), random.random(), -0.5),
+            Spark(sparks.colors.random_selection(), random.random(), -0.5),
         )
-
-
-def _pruned_collection(collection):
-    return [
-        c for c in collection if all(-0.5 <= a <= 1.5 for a in (c.y, c.x))
-    ]
 
 
 def fire(bottom, top, profile=None):
@@ -226,10 +218,9 @@ class Point(Coordinate):
         self.index = index
         self.weight = WEIGHT
 
-    def update(self, sparks):
+    def update(self, sparks, weight=WEIGHT):
         fan = self.fan
         index = self.index
-        weight = self.weight
         for spark in sparks:
             dist = _euclidean_distance(self.x, self.y, spark.x, spark.y)
             color = _color_from_distance(spark.color, dist, weight)
@@ -254,3 +245,11 @@ class Sparks:
     def __iter__(self):
         for i in self.collection:
             yield i
+
+    def prune(self):
+        self.collection = [
+            c for c in self.collection if all(-0.5 <= a <= 1.5 for a in (c.y, c.x))
+        ]
+
+    def add(self, *args):
+        self.collection.extend(args)
