@@ -13,8 +13,10 @@ from .extensions.LightshowTools import (
     _color_from_distance,
 )
 
+
 WEIGHT = -20
 INCREMENT = (0, 0.025)
+
 
 def _test(bottom, top, points, profile):
     if not profile == "test":
@@ -47,17 +49,18 @@ def _clock_hook_closure():
         if now.hour != _clock_hook.current.hour:
             _strike_on_hour(sparks, points, current=now)
             _clock_hook.current = now
+
     _clock_hook.current = datetime.now()
     return _clock_hook
 
 
 def _strike_on_hour(sparks, points, current):
     fans = set(p.fan for p in points)
-    _taper_sparks(sparks, points, fans)
+    _fade_points(sparks, points, fans, current)
 
     increment = (0, 0.0075)
     weight = -9
-    color = (255,255,255)
+    color = (255, 255, 255)
 
     appends, hour = 0, current.hour
     while appends != hour:
@@ -90,6 +93,20 @@ def _taper_sparks(sparks, points, fans, increment=INCREMENT, weight=WEIGHT):
     while sparks.collection:
         _step_sparks(sparks, points, fans, increment=increment, weight=weight)
         sparks.prune()
+
+
+def _fade_points(sparks, points, fans, current):
+    while True:
+        ts = (datetime.now() - current).total_seconds()
+        if ts >= 1:
+            break
+        for fan in fans:
+            fan.clear()
+        for p in points:
+            p.fan[p.index] = tuple((1 - ts) * c for c in p.fan[p.index])
+        for fan in fans:
+            fan.show()
+    sparks.collection = []
 
 
 def _replenish_sparks(sparks):
@@ -182,14 +199,9 @@ class ColorProfile:
         if now is None:
             now = datetime.now()
 
-        if (
-            not hasattr(self, "_sunrise_and_sunset")
-            or now.day != self.current.day
-        ):
+        if not hasattr(self, "_sunrise_and_sunset") or now.day != self.current.day:
             self.current = now
-            _sunrise_and_sunset = ColorProfile._request_sunrise_and_sunset(
-                self.ip
-            )
+            _sunrise_and_sunset = ColorProfile._request_sunrise_and_sunset(self.ip)
             sunrise = _sunrise_and_sunset["results"]["sunrise"][:-6]
             sunset = _sunrise_and_sunset["results"]["sunset"][:-6]
             self._sunrise_and_sunset = (
