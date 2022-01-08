@@ -17,7 +17,7 @@ WEIGHT = -20
 INCREMENT = (0, 0.025)
 
 
-def _test(bottom, top, points, profile):
+def _test(points, profile):
     if not profile == "test":
         return
     collection = [
@@ -31,7 +31,7 @@ def _test(bottom, top, points, profile):
         if not all(-0.1 <= a <= 1.1 for c in sparks.collection for a in (c.y, c.x)):
             dy = -dy
         sparks.step(0, dy)
-        _paint_canvas(sparks, points, fans=(bottom, top), weight=-30)
+        _paint_canvas(sparks, points, weight=-30)
 
 
 def _clock_hook_closure():
@@ -46,11 +46,10 @@ def _clock_hook_closure():
 
 
 def _strike_on_hour(sparks, points, current):
-    fans = set(p.fan for p in points)
-    _taper_sparks(sparks, points, fans)
+    _taper_sparks(sparks, points)
 
-    increment = (0, 0.0075)
     weight = -9
+    increment = (0, 0.0075)
     color = (255, 255, 255)
 
     appends, hour = 0, current.hour
@@ -63,24 +62,22 @@ def _strike_on_hour(sparks, points, current):
             )
             appends += 1
         sparks.step(*increment)
-        _paint_canvas(sparks, points, fans, weight=weight)
+        _paint_canvas(sparks, points, weight=weight)
         sparks.prune()
-    _taper_sparks(sparks, points, fans, increment=increment, weight=weight)
+    _taper_sparks(sparks, points, increment=increment, weight=weight)
 
 
-def _paint_canvas(sparks, points, fans, weight=WEIGHT):
-    for fan in fans:
-        fan.clear()
+def _paint_canvas(sparks, points, weight=WEIGHT):
+    points.clear_fans()
     for point in points:
         point.update(sparks, weight=weight)
-    for fan in fans:
-        fan.show()
+    points.show_fans()
 
 
-def _taper_sparks(sparks, points, fans, increment=INCREMENT, weight=WEIGHT):
+def _taper_sparks(sparks, points, increment=INCREMENT, weight=WEIGHT):
     while sparks.collection:
         sparks.step(*increment)
-        _paint_canvas(sparks, points, fans, weight=weight)
+        _paint_canvas(sparks, points, weight=weight)
         sparks.prune()
 
 
@@ -100,15 +97,17 @@ def fire(bottom, top, profile=None):
         for i in range(CIRCUMFERENCE)
     )
 
-    points = list(itertools.chain(bottom_points, top_points))
     sparks = Sparks(colors)
+    points = Points(
+        fans=(bottom, top), collection=list(itertools.chain(bottom_points, top_points))
+    )
 
-    _test(bottom, top, points, profile)
+    _test(points, profile)
     _clock_hook = _clock_hook_closure()
 
     while True:
         sparks.step(*INCREMENT)
-        _paint_canvas(sparks, points, fans=(bottom, top))
+        _paint_canvas(sparks, points)
         _clock_hook(sparks, points)
         sparks.update()
 
@@ -147,10 +146,10 @@ class ColorProfile:
 
     @staticmethod
     def _request_sunrise_and_sunset(ip):
-        loc = ip["loc"].split(",")
-        return requests.get(
-            "https://api.sunrise-sunset.org/json?lat={}&lng{}&formatted=0".format(*loc)
-        ).json()
+        lat, lng = ip["loc"].split(",")
+        query = f"lat={lat}&lng{lng}&formatted=0"
+        resp = requests.get(f"https://api.sunrise-sunset.org/json?{query}")
+        return resp.json()
 
     def _colors_from_datetime(self):
         now = datetime.now()
@@ -158,8 +157,7 @@ class ColorProfile:
 
         if sunrise <= now <= sunset:
             return random.choice(ColorProfile.HOT_COLORS)
-        else:
-            return random.choice(ColorProfile.COLD_COLORS)
+        return random.choice(ColorProfile.COLD_COLORS)
 
     def sunrise_and_sunset(self, now=None):
         if now is None:
@@ -179,10 +177,9 @@ class ColorProfile:
     def random_selection(self):
         if self.profile == "h":
             return random.choice(ColorProfile.HOT_COLORS)
-        elif self.profile == "c":
+        if self.profile == "c":
             return random.choice(ColorProfile.COLD_COLORS)
-        else:
-            return self._colors_from_datetime()
+        return self._colors_from_datetime()
 
 
 class Coordinate:
@@ -215,6 +212,24 @@ class Spark(Coordinate):
     def step(self, dx, dy):
         self.x += dx
         self.y += dy
+
+
+class Points:
+    def __init__(self, fans, collection=None):
+        self.fans = fans
+        self.collection = collection or []
+
+    def __iter__(self):
+        for item in self.collection:
+            yield item
+
+    def clear_fans(self):
+        for fan in self.fan:
+            fan.clear()
+
+    def show_fans(self):
+        for fan in self.fan:
+            fan.show()
 
 
 class Sparks:
