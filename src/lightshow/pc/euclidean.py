@@ -54,9 +54,10 @@ def _strike_on_hour(sparks, points, current):
     weight = -9
     color = (255, 255, 255)
 
-    appends, hour = 0, current.hour
+    appends = 0
+    hour = current.hour
+
     while appends != hour:
-        now = datetime.now()
         if all(c.y > 0.5 for c in sparks.collection):
             sparks.add(
                 Spark(color, 0.5, -0.5),
@@ -64,7 +65,6 @@ def _strike_on_hour(sparks, points, current):
                 Spark(color, 0.75, -0.5),
             )
             appends += 1
-            current = now
         _step_sparks(sparks, points, fans, increment=increment, weight=weight)
         sparks.prune()
     _taper_sparks(sparks, points, fans, increment=increment, weight=weight)
