@@ -224,11 +224,11 @@ class Points:
             yield item
 
     def clear_fans(self):
-        for fan in self.fan:
+        for fan in self.fans:
             fan.clear()
 
     def show_fans(self):
-        for fan in self.fan:
+        for fan in self.fans:
             fan.show()
 
 
