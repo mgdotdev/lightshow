@@ -66,16 +66,16 @@ def _strike_on_hour(sparks, points, hour):
             ])
             appends += 1
             current = now
-        _step_sparks(sparks, points)
+        _step_sparks(sparks, points, increment=(0, 0.004))
     _taper_sparks(sparks, points)
 
 
-def _step_sparks(sparks, points):
+def _step_sparks(sparks, points, increment=(0, 0.025)):
     fans = set(p.fan for p in points)
     for fan in fans:
         fan.clear()
     for spark in sparks:
-        spark.step(dx=0, dy=0.025)
+        spark.step(*increment)
     for point in points:
         point.update(sparks)
     for fan in fans:
