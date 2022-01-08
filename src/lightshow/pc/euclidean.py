@@ -66,8 +66,8 @@ def _strike_on_hour(sparks, points, hour):
             ])
             appends += 1
             current = now
-        _step_sparks(sparks, points, increment=(0, 0.004))
-    _taper_sparks(sparks, points)
+        _step_sparks(sparks, points, increment=(0, 0.01))
+    _taper_sparks(sparks, points, increment=(0, 0.01))
 
 
 def _step_sparks(sparks, points, increment=(0, 0.025)):
@@ -82,9 +82,9 @@ def _step_sparks(sparks, points, increment=(0, 0.025)):
         fan.show()
 
 
-def _taper_sparks(sparks, points):
+def _taper_sparks(sparks, points, increment=(0, 0.025)):
     while sparks.collection:
-        _step_sparks(sparks, points)
+        _step_sparks(sparks, points, increment=increment)
         sparks.collection = _pruned_collection(sparks.collection)
 
 
