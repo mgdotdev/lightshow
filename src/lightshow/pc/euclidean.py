@@ -52,7 +52,11 @@ def _clock_hook_closure():
 
 
 def _strike_on_hour(sparks, points, current):
+    increment = (0, 0.075)
+    weight = -10
+
     fans = set(p.fan for p in points)
+    
     appends = 0
     hour = current.hour
 
@@ -67,10 +71,9 @@ def _strike_on_hour(sparks, points, current):
             )
             appends += 1
             current = now
-        _step_sparks(sparks, points, fans, increment=(0, 0.004), weight=-10)
+        _step_sparks(sparks, points, fans, increment=increment, weight=weight)
         sparks.prune()
-        
-    _taper_sparks(sparks, points, fans, increment=(0, 0.004))
+    _taper_sparks(sparks, points, fans, increment=increment, weight=weight)
 
 
 def _step_sparks(sparks, points, fans, increment=(0, 0.025), weight=WEIGHT):
@@ -84,9 +87,9 @@ def _step_sparks(sparks, points, fans, increment=(0, 0.025), weight=WEIGHT):
         fan.show()
 
 
-def _taper_sparks(sparks, points, fans, increment=(0, 0.025)):
+def _taper_sparks(sparks, points, fans, increment=(0, 0.025), weight=WEIGHT):
     while sparks.collection:
-        _step_sparks(sparks, points, fans, increment=increment)
+        _step_sparks(sparks, points, fans, increment=increment, weight=weight)
         sparks.prune()
 
 
