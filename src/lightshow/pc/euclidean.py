@@ -30,7 +30,8 @@ def _test(bottom, top, points, profile):
     while True:
         if not all(-0.1 <= a <= 1.1 for c in sparks.collection for a in (c.y, c.x)):
             dy = -dy
-        _step_sparks(sparks, points, (bottom, top), increment=(0, dy), weight=-30)
+        sparks.step(0, dy)
+        _paint_canvas(sparks, points, fans=(bottom, top), weight=-30)
 
 
 def _clock_hook_closure():
@@ -61,16 +62,15 @@ def _strike_on_hour(sparks, points, current):
                 Spark(color, 0.75, -0.5),
             )
             appends += 1
-        _step_sparks(sparks, points, fans, increment=increment, weight=weight)
+        sparks.step(*increment)
+        _paint_canvas(sparks, points, fans, weight=weight)
         sparks.prune()
     _taper_sparks(sparks, points, fans, increment=increment, weight=weight)
 
 
-def _step_sparks(sparks, points, fans, increment=INCREMENT, weight=WEIGHT):
+def _paint_canvas(sparks, points, fans, weight=WEIGHT):
     for fan in fans:
         fan.clear()
-    for spark in sparks:
-        spark.step(*increment)
     for point in points:
         point.update(sparks, weight=weight)
     for fan in fans:
@@ -79,18 +79,9 @@ def _step_sparks(sparks, points, fans, increment=INCREMENT, weight=WEIGHT):
 
 def _taper_sparks(sparks, points, fans, increment=INCREMENT, weight=WEIGHT):
     while sparks.collection:
-        _step_sparks(sparks, points, fans, increment=increment, weight=weight)
+        sparks.step(*increment)
+        _paint_canvas(sparks, points, fans, weight=weight)
         sparks.prune()
-
-
-def _replenish_sparks(sparks):
-    sparks.prune()
-    if random.random() > 0.80 and len(sparks) < 1000:
-        sparks.add(
-            Spark(sparks.colors.random_selection(), random.random(), -0.5),
-            Spark(sparks.colors.random_selection(), random.random(), -0.5),
-            Spark(sparks.colors.random_selection(), random.random(), -0.5),
-        )
 
 
 def fire(bottom, top, profile=None):
@@ -116,9 +107,10 @@ def fire(bottom, top, profile=None):
     _clock_hook = _clock_hook_closure()
 
     while True:
-        _step_sparks(sparks, points, fans=(bottom, top))
-        _replenish_sparks(sparks)
+        sparks.step()
+        _paint_canvas(sparks, points, fans=(bottom, top))
         _clock_hook(sparks, points)
+        sparks.update()
 
 
 def pos_from_center(position, index, radius):
@@ -244,3 +236,19 @@ class Sparks:
 
     def add(self, *args):
         self.collection.extend(args)
+
+    def step(self, dx, dy):
+        for spark in self.collection:
+            spark.step(dx, dy)
+
+    def replenish(self):
+        if random.random() > 0.80 and len(self) < 1000:
+            self.add(
+                Spark(self.colors.random_selection(), random.random(), -0.5),
+                Spark(self.colors.random_selection(), random.random(), -0.5),
+                Spark(self.colors.random_selection(), random.random(), -0.5),
+            )
+
+    def update(self):
+        self.prune()
+        self.replenish()
