@@ -68,6 +68,8 @@ def _strike_on_hour(sparks, points, hour):
 def _taper_sparks(sparks, points):
     fans = set(p.fan for p in points)
     while sparks.collection:
+        for fan in fans:
+            fan.clear()
         for spark in sparks:
             spark.step(dx=0, dy=0.025)
         for point in points:
