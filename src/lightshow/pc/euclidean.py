@@ -44,9 +44,9 @@ def _test(bottom, top, points, profile):
 def _clock_hook_closure():
     def _clock_hook(sparks, points):
         now = datetime.now()
-        if now.hour != _clock_hook.current.hour:
-            _strike_on_hour(sparks, points, current=now)
-            _clock_hook.current = now
+        #if now.hour != _clock_hook.current.hour:
+        _strike_on_hour(sparks, points, current=now)
+        _clock_hook.current = now
     _clock_hook.current = datetime.now()
     return _clock_hook
 
@@ -59,7 +59,7 @@ def _strike_on_hour(sparks, points, current):
     _taper_sparks(sparks, points, fans)
     while appends != hour:
         now = datetime.now()
-        if current.second != now.second:
+        if all(c.y > 0.5 for c in sparks.collection):
             sparks.collection.extend([
                 Spark((255, 255, 255), 0.5, -0.5),
                 Spark((255, 255, 255), 0.25, -0.5),
