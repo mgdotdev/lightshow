@@ -44,18 +44,17 @@ def _test(bottom, top, points, profile):
 def _clock_hook_closure():
     def _clock_hook(sparks, points):
         now = datetime.now()
-        hour = now.hour
-        # if hour != _clock_hook.current.hour:
-        _strike_on_hour(sparks, points, hour)
-        _clock_hook.current = now
+        if now.hour != _clock_hook.current.hour:
+            _strike_on_hour(sparks, points, current=now)
+            _clock_hook.current = now
     _clock_hook.current = datetime.now()
     return _clock_hook
 
 
-def _strike_on_hour(sparks, points, hour):
+def _strike_on_hour(sparks, points, current):
     fans = set(p.fan for p in points)
     appends = 0
-    current = datetime.now()
+    hour = current.hour
 
     _taper_sparks(sparks, points, fans)
     while appends != hour:
@@ -68,8 +67,8 @@ def _strike_on_hour(sparks, points, hour):
             ])
             appends += 1
             current = now
-        _step_sparks(sparks, points, fans, increment=(0, 0.01))
-    _taper_sparks(sparks, points, fans, increment=(0, 0.01))
+        _step_sparks(sparks, points, fans, increment=(0, 0.004))
+    _taper_sparks(sparks, points, fans, increment=(0, 0.004))
 
 
 def _step_sparks(sparks, points, fans, increment=(0, 0.025)):
@@ -87,6 +86,19 @@ def _taper_sparks(sparks, points, fans, increment=(0, 0.025)):
     while sparks.collection:
         _step_sparks(sparks, points, fans, increment=increment)
         sparks.collection = _pruned_collection(sparks.collection)
+
+
+def _replenish_sparks(sparks):
+    sparks.collection = _pruned_collection(sparks.collection)
+
+    if random.random() > 0.80 and len(sparks.collection) < 1000:
+        sparks.collection.extend(
+            [
+                Spark(sparks.colors.random_selection(), random.random(), -0.5),
+                Spark(sparks.colors.random_selection(), random.random(), -0.5),
+                Spark(sparks.colors.random_selection(), random.random(), -0.5),
+            ]
+        )
 
 
 def _pruned_collection(collection):
@@ -119,7 +131,7 @@ def fire(bottom, top, profile=None):
 
     while True:
         _step_sparks(sparks, points, (bottom, top))
-        sparks.prune()
+        _replenish_sparks(sparks)
         _clock_hook(sparks, points)
 
 
@@ -241,16 +253,3 @@ class Sparks:
     def __iter__(self):
         for i in self.collection:
             yield i
-
-    def prune(self):
-        # remove sparks considered out of bounds
-        self.collection = _pruned_collection(self.collection)
-
-        if random.random() > 0.80 and len(self.collection) < 1000:
-            self.collection.extend(
-                [
-                    Spark(self.colors.random_selection(), random.random(), -0.5),
-                    Spark(self.colors.random_selection(), random.random(), -0.5),
-                    Spark(self.colors.random_selection(), random.random(), -0.5),
-                ]
-            )
