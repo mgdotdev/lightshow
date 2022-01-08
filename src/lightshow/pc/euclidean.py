@@ -54,35 +54,43 @@ def _clock_hook_closure():
 
 def _strike_on_hour(sparks, points, hour):
     _taper_sparks(sparks, points)
-    for _ in range(hour):
-        sparks.collection = [
-            Spark((255, 255, 255), 0.5, -0.2),
-            Spark((255, 255, 255), 0.25, -0.2),
-            Spark((255, 255, 255), 0.75, -0.2),
-            Spark((255, 255, 255), 0.5, -0.1),
-            Spark((255, 255, 255), 0.25, -0.1),
-            Spark((255, 255, 255), 0.75, -0.1),
-        ]
-        _taper_sparks(sparks, points)
-        
+    appends = 0
+    current = datetime.now()
+    while appends != hour:
+        now = datetime.now()
+        if current.second != now.second:
+            sparks.collection.extend([
+                Spark((255, 255, 255), 0.5, -0.5),
+                Spark((255, 255, 255), 0.25, -0.5),
+                Spark((255, 255, 255), 0.75, -0.5),
+            ])
+            appends += 1
+            current = now
+        _step_sparks(sparks, points)
+    _taper_sparks(sparks, points)
+
+
+def _step_sparks(sparks, points):
+    fans = set(p.fan for p in points)
+    for fan in fans:
+        fan.clear()
+    for spark in sparks:
+        spark.step(dx=0, dy=0.025)
+    for point in points:
+        point.update(sparks)
+    for fan in fans:
+        fan.show()
+
 
 def _taper_sparks(sparks, points):
-    fans = set(p.fan for p in points)
     while sparks.collection:
-        for fan in fans:
-            fan.clear()
-        for spark in sparks:
-            spark.step(dx=0, dy=0.001)
-        for point in points:
-            point.update(sparks)
+        _step_sparks(sparks, points)
         sparks.collection = _pruned_collection(sparks.collection)
-        for fan in fans:
-            fan.show()
 
 
 def _pruned_collection(collection):
     return [
-        c for c in collection if all(-0.2 <= a <= 1.2 for a in (c.y, c.x))
+        c for c in collection if all(-0.5 <= a <= 1.5 for a in (c.y, c.x))
     ]
 
 
@@ -109,16 +117,8 @@ def fire(bottom, top, profile=None):
     _clock_hook = _clock_hook_closure()
 
     while True:
-        bottom.clear()
-        top.clear()
-        for spark in sparks:
-            spark.step(dx=0, dy=0.025)
-        for point in points:
-            point.update(sparks)
-        bottom.show()
-        top.show()
+        _step_sparks(sparks, points)
         sparks.prune()
-
         _clock_hook(sparks, points)
 
 
