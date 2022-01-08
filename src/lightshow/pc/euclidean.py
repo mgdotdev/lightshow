@@ -6,14 +6,12 @@ import requests
 
 from datetime import datetime
 
-from .utils import CIRCUMFERENCE, Offset, SingleColumn
+from .utils import CIRCUMFERENCE, Offset
 from .extensions.LightshowTools import (
     _euclidean_distance,
     _color_merge,
     _color_from_distance,
 )
-
-from ..tools import circle_indexes, color_fader
 
 WEIGHT = -20
 
@@ -61,6 +59,9 @@ def _strike_on_hour(sparks, points, hour):
             Spark((255, 255, 255), 0.5, -0.2),
             Spark((255, 255, 255), 0.25, -0.2),
             Spark((255, 255, 255), 0.75, -0.2),
+            Spark((255, 255, 255), 0.5, -0.1),
+            Spark((255, 255, 255), 0.25, -0.1),
+            Spark((255, 255, 255), 0.75, -0.1),
         ]
         _taper_sparks(sparks, points)
         
@@ -71,7 +72,7 @@ def _taper_sparks(sparks, points):
         for fan in fans:
             fan.clear()
         for spark in sparks:
-            spark.step(dx=0, dy=0.025)
+            spark.step(dx=0, dy=0.001)
         for point in points:
             point.update(sparks)
         sparks.collection = _pruned_collection(sparks.collection)
