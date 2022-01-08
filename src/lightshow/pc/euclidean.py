@@ -107,7 +107,7 @@ def fire(bottom, top, profile=None):
     _clock_hook = _clock_hook_closure()
 
     while True:
-        sparks.step()
+        sparks.step(*INCREMENT)
         _paint_canvas(sparks, points, fans=(bottom, top))
         _clock_hook(sparks, points)
         sparks.update()
