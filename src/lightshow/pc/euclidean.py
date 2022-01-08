@@ -14,7 +14,7 @@ from .extensions.LightshowTools import (
 )
 
 WEIGHT = -20
-
+INCREMENT = (0, 0.025)
 
 def _test(bottom, top, points, profile):
     if not profile == "test":
@@ -52,22 +52,21 @@ def _clock_hook_closure():
 
 
 def _strike_on_hour(sparks, points, current):
-    increment = (0, 0.075)
-    weight = -10
-
     fans = set(p.fan for p in points)
-    
-    appends = 0
-    hour = current.hour
-
     _taper_sparks(sparks, points, fans)
+
+    increment = (0, 0.0075)
+    weight = -9
+    color = (255,255,255)
+
+    appends, hour = 0, current.hour
     while appends != hour:
         now = datetime.now()
         if all(c.y > 0.5 for c in sparks.collection):
             sparks.add(
-                Spark((255, 255, 255), 0.5, -0.5),
-                Spark((255, 255, 255), 0.25, -0.5),
-                Spark((255, 255, 255), 0.75, -0.5),
+                Spark(color, 0.5, -0.5),
+                Spark(color, 0.25, -0.5),
+                Spark(color, 0.75, -0.5),
             )
             appends += 1
             current = now
@@ -76,7 +75,7 @@ def _strike_on_hour(sparks, points, current):
     _taper_sparks(sparks, points, fans, increment=increment, weight=weight)
 
 
-def _step_sparks(sparks, points, fans, increment=(0, 0.025), weight=WEIGHT):
+def _step_sparks(sparks, points, fans, increment=INCREMENT, weight=WEIGHT):
     for fan in fans:
         fan.clear()
     for spark in sparks:
@@ -87,7 +86,7 @@ def _step_sparks(sparks, points, fans, increment=(0, 0.025), weight=WEIGHT):
         fan.show()
 
 
-def _taper_sparks(sparks, points, fans, increment=(0, 0.025), weight=WEIGHT):
+def _taper_sparks(sparks, points, fans, increment=INCREMENT, weight=WEIGHT):
     while sparks.collection:
         _step_sparks(sparks, points, fans, increment=increment, weight=weight)
         sparks.prune()
@@ -95,7 +94,7 @@ def _taper_sparks(sparks, points, fans, increment=(0, 0.025), weight=WEIGHT):
 
 def _replenish_sparks(sparks):
     sparks.prune()
-    if random.random() > 0.80 and len(sparks.collection) < 1000:
+    if random.random() > 0.80 and len(sparks) < 1000:
         sparks.add(
             Spark(sparks.colors.random_selection(), random.random(), -0.5),
             Spark(sparks.colors.random_selection(), random.random(), -0.5),
@@ -126,7 +125,7 @@ def fire(bottom, top, profile=None):
     _clock_hook = _clock_hook_closure()
 
     while True:
-        _step_sparks(sparks, points, (bottom, top))
+        _step_sparks(sparks, points, fans=(bottom, top))
         _replenish_sparks(sparks)
         _clock_hook(sparks, points)
 
@@ -248,6 +247,9 @@ class Sparks:
     def __iter__(self):
         for i in self.collection:
             yield i
+
+    def __len__(self):
+        return len(self.collection)
 
     def prune(self):
         self.collection = [
