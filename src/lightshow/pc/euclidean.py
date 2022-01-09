@@ -54,7 +54,7 @@ def _strike_on_hour(sparks, points, current):
 
     appends = 0
     hour = current.hour
-    
+
     if hour > 12:
         hour = hour - 12
     elif hour == 0:
@@ -152,9 +152,10 @@ class ColorProfile:
         self.ip = requests.get("https://ipinfo.io").json()
 
     @staticmethod
-    def _request_sunrise_and_sunset(ip):
+    def _request_sunrise_and_sunset(ip, now):
+        date = now.date().isoformat()
         lat, lng = ip["loc"].split(",")
-        query = f"lat={lat}&lng{lng}&formatted=0"
+        query = f"lat={lat}&lng{lng}&formatted=0&date={date}"
         resp = requests.get(f"https://api.sunrise-sunset.org/json?{query}")
         return resp.json()
 
@@ -172,7 +173,7 @@ class ColorProfile:
 
         if not hasattr(self, "_sunrise_and_sunset") or now.day != self.current.day:
             self.current = now
-            _sunrise_and_sunset = ColorProfile._request_sunrise_and_sunset(self.ip)
+            _sunrise_and_sunset = ColorProfile._request_sunrise_and_sunset(self.ip, now)
             sunrise = _sunrise_and_sunset["results"]["sunrise"][:-6]
             sunset = _sunrise_and_sunset["results"]["sunset"][:-6]
             self._sunrise_and_sunset = (
