@@ -31,7 +31,7 @@ def _test(points, profile):
         if not all(-0.1 <= a <= 1.1 for c in sparks.collection for a in (c.y, c.x)):
             dy = -dy
         sparks.step(0, dy)
-        _paint_canvas(sparks, points, weight=-30)
+        points.show(sparks, weight=-30)
 
 
 def _clock_hook_closure():
@@ -46,19 +46,14 @@ def _clock_hook_closure():
 
 
 def _strike_on_hour(sparks, points, current):
-    _taper_sparks(sparks, points)
+    _taper_lights(sparks, points)
 
     weight = -9
     increment = (0, 0.0075)
     color = (255, 255, 255)
 
     appends = 0
-    hour = current.hour
-
-    if hour > 12:
-        hour = hour - 12
-    elif hour == 0:
-        hour = 12
+    hour = current.hour % 12 or 12
 
     while appends != hour:
         if all(c.y > 0.5 for c in sparks.collection):
@@ -69,22 +64,15 @@ def _strike_on_hour(sparks, points, current):
             )
             appends += 1
         sparks.step(*increment)
-        _paint_canvas(sparks, points, weight=weight)
+        points.show(sparks, weight)
         sparks.prune()
-    _taper_sparks(sparks, points, increment=increment, weight=weight)
+    _taper_lights(sparks, points, increment=increment, weight=weight)
 
 
-def _paint_canvas(sparks, points, weight=WEIGHT):
-    points.clear_fans()
-    for point in points:
-        point.update(sparks, weight=weight)
-    points.show_fans()
-
-
-def _taper_sparks(sparks, points, increment=INCREMENT, weight=WEIGHT):
+def _taper_lights(sparks, points, increment=INCREMENT, weight=WEIGHT):
     while sparks.collection:
         sparks.step(*increment)
-        _paint_canvas(sparks, points, weight=weight)
+        points.show(sparks, weight=weight)
         sparks.prune()
 
 
@@ -113,9 +101,9 @@ def fire(bottom, top, profile=None):
     _clock_hook = _clock_hook_closure()
 
     while True:
-        sparks.step(*INCREMENT)
-        _paint_canvas(sparks, points)
         _clock_hook(sparks, points)
+        sparks.step(*INCREMENT)
+        points.show(sparks)
         sparks.update()
 
 
@@ -230,6 +218,12 @@ class Points:
     def __iter__(self):
         for item in self.collection:
             yield item
+
+    def show(self, sparks, weight=WEIGHT):
+        self.clear_fans()
+        for point in self.collection:
+            point.update(sparks, weight=weight)
+        self.show_fans()
 
     def clear_fans(self):
         for fan in self.fans:
