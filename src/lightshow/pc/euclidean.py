@@ -52,7 +52,14 @@ def _strike_on_hour(sparks, points, current):
     increment = (0, 0.0075)
     color = (255, 255, 255)
 
-    appends, hour = 0, current.hour
+    appends = 0
+    hour = current.hour
+    
+    if hour > 12:
+        hour = hour - 12
+    elif hour == 0:
+        hour = 12
+
     while appends != hour:
         if all(c.y > 0.5 for c in sparks.collection):
             sparks.add(
@@ -257,11 +264,12 @@ class Sparks:
             spark.step(dx, dy)
 
     def replenish(self):
+        select = self.colors.random_selection
         if random.random() > 0.80 and len(self) < 1000:
             self.add(
-                Spark(self.colors.random_selection(), random.random(), -0.5),
-                Spark(self.colors.random_selection(), random.random(), -0.5),
-                Spark(self.colors.random_selection(), random.random(), -0.5),
+                Spark(select(), random.random(), -0.5),
+                Spark(select(), random.random(), -0.5),
+                Spark(select(), random.random(), -0.5),
             )
 
     def update(self):
