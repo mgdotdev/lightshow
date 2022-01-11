@@ -53,8 +53,8 @@ def _strike_on_hour(sparks, points, current):
     color = (255, 255, 255)
 
     appends = 0
-    hour = current.hour % 12 or 12
-
+    hour = ((current.hour - 1) % 12) + 1
+    
     while appends != hour:
         if all(c.y > 0.5 for c in sparks.collection):
             sparks.add(
