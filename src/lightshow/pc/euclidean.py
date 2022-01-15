@@ -144,7 +144,7 @@ class ColorProfile:
         date = now.date().isoformat()
         lat, lng = ip["loc"].split(",")
         query = f"lat={lat}&lng{lng}&formatted=0&date={date}"
-        resp = requests.get(f"https://api.sunrise-sunset.org/json?{query}")
+        resp = requests.get(f"http://api.sunrise-sunset.org/json?{query}")
         return resp.json()
 
     def _colors_from_datetime(self):
