@@ -134,6 +134,16 @@ class ColorProfile:
         (255, 0, 255),
     ]
 
+    GREEN_COLORS = [
+        (0, 255, 0),
+        (40, 255, 0),
+        (80, 255, 0),
+        (120, 255, 0),
+        (160, 255, 0),
+        (200, 255, 0),
+        (255, 255, 0),
+    ]
+
     def __init__(self, profile):
         self.profile = profile
         self.current = datetime.now()
@@ -171,10 +181,13 @@ class ColorProfile:
         return self._sunrise_and_sunset
 
     def random_selection(self):
-        if self.profile == "h":
+        color = self.profile
+        if color == "h":
             return random.choice(ColorProfile.HOT_COLORS)
-        if self.profile == "c":
+        elif color == "c":
             return random.choice(ColorProfile.COLD_COLORS)
+        elif color == "g":
+            return random.choice(ColorProfile.GREEN_COLORS)
         return self._colors_from_datetime()
 
 
