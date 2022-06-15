@@ -1,1 +1,2 @@
-# boo typescript
+# yay typescript
+# boo python and oop code
