@@ -1,6 +1,7 @@
 import itertools
 import math
 import random
+import zoneinfo
 
 import astral
 
@@ -16,7 +17,7 @@ from .extensions.LightshowTools import (
 
 WEIGHT = -20
 INCREMENT = (0, 0.025)
-
+TZ = zoneinfo.ZoneInfo("US/Pacific")
 
 def _test(points, profile):
     if not profile == "test":
@@ -37,12 +38,12 @@ def _test(points, profile):
 
 def _clock_hook_closure():
     def _clock_hook(sparks, points):
-        now = datetime.now()
+        now = datetime.now(TZ)
         if now.hour != _clock_hook.current.hour:
             _strike_on_hour(sparks, points, current=now)
             _clock_hook.current = now
 
-    _clock_hook.current = datetime.now()
+    _clock_hook.current = datetime.now(TZ)
     return _clock_hook
 
 
@@ -147,7 +148,8 @@ class ColorProfile:
 
     def __init__(self, profile):
         self.profile = profile
-        self.current = datetime.now()
+        self.tz = zoneinfo.ZoneInfo("US/Pacific")
+        self.current = datetime.now(TZ)
 
     @staticmethod
     def _request_sunrise_and_sunset():
@@ -157,7 +159,7 @@ class ColorProfile:
         return sunrise, sunset
 
     def _colors_from_datetime(self):
-        now = datetime.now()
+        now = datetime.now(TZ)
         sunrise, sunset = self.sunrise_and_sunset(now)
 
         if sunrise <= now <= sunset:
@@ -166,7 +168,7 @@ class ColorProfile:
 
     def sunrise_and_sunset(self, now=None):
         if now is None:
-            now = datetime.now()
+            now = datetime.now(TZ)
 
         if not hasattr(self, "_sunrise_and_sunset") or now.day != self.current.day:
             self.current = now
