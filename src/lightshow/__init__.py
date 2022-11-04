@@ -1,2 +1,2 @@
-# yay typescript
-# boo python and oop code
+# python > js
+
