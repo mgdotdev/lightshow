@@ -2,9 +2,10 @@ import itertools
 import math
 import random
 
-import requests
+import astral
 
 from datetime import datetime
+from astral import sun
 
 from .utils import CIRCUMFERENCE, Offset
 from .extensions.LightshowTools import (
@@ -54,7 +55,7 @@ def _strike_on_hour(sparks, points, current):
 
     appends = 0
     hour = ((current.hour - 1) % 12) + 1
-    
+
     while appends != hour:
         if all(c.y > 0.5 for c in sparks.collection):
             sparks.add(
@@ -147,15 +148,13 @@ class ColorProfile:
     def __init__(self, profile):
         self.profile = profile
         self.current = datetime.now()
-        self.ip = requests.get("https://ipinfo.io").json()
 
     @staticmethod
-    def _request_sunrise_and_sunset(ip, now):
-        date = now.date().isoformat()
-        lat, lng = ip["loc"].split(",")
-        query = f"lat={lat}&lng{lng}&formatted=0&date={date}"
-        resp = requests.get(f"http://api.sunrise-sunset.org/json?{query}")
-        return resp.json()
+    def _request_sunrise_and_sunset():
+        observer = astral.Observer(35.393528, -119.043732, 200)
+        sunrise = sun.sunrise(observer, tzinfo="US/Pacific")
+        sunset = sun.sunset(observer, tzinfo="US/Pacific")
+        return sunrise, sunset
 
     def _colors_from_datetime(self):
         now = datetime.now()
@@ -171,13 +170,7 @@ class ColorProfile:
 
         if not hasattr(self, "_sunrise_and_sunset") or now.day != self.current.day:
             self.current = now
-            _sunrise_and_sunset = ColorProfile._request_sunrise_and_sunset(self.ip, now)
-            sunrise = _sunrise_and_sunset["results"]["sunrise"][:-6]
-            sunset = _sunrise_and_sunset["results"]["sunset"][:-6]
-            self._sunrise_and_sunset = (
-                datetime.fromisoformat(sunrise),
-                datetime.fromisoformat(sunset),
-            )
+            self._sunrise_and_sunset = ColorProfile._request_sunrise_and_sunset()
         return self._sunrise_and_sunset
 
     def random_selection(self):
