@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 rm nohup.out
 kill $(pgrep lightshow)

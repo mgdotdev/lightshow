@@ -74,3 +74,7 @@ def main():
             else:
                 profile = "2"
             pc_quad_pulse(px1, px2, int(profile))
+
+
+if __name__ == "__main__":
+    main()
