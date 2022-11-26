@@ -33,7 +33,7 @@ def main():
         elif effect == "circle":
             window_circle(pixels)
     elif target == "2gb-b":
-        pixels = neopixel.NeoPixel(board.D18, 350, brightness=1, auto_write=False)
+        pixels = neopixel.NeoPixel(board.D21, 350, brightness=1, auto_write=False)
         pixels.fill((0, 0, 0))
         pixels.show()
         if effect == OFF:
