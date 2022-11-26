@@ -32,8 +32,8 @@ def main():
             window_comets(pixels)
         elif effect == "circle":
             window_circle(pixels)
-    elif target == "mud":
-        pixels = neopixel.NeoPixel(board.D18, 300, brightness=1, auto_write=False)
+    elif target == "2gb-b":
+        pixels = neopixel.NeoPixel(board.D18, 350, brightness=1, auto_write=False)
         pixels.fill((0, 0, 0))
         pixels.show()
         if effect == OFF:
