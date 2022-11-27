@@ -6,7 +6,7 @@ BACKGROUND = (1, 1, 1)
 
 PRIMARY = (255, 0, 0)
 SECONDARY = (0, 255, 0)
-TAIL_LENGTH = 20
+TAIL_LENGTH = 10
 
 
 def comets(pixels):
@@ -26,7 +26,7 @@ def comets(pixels):
         Comet(300, 1, TAIL_LENGTH, PRIMARY, pixels, background=BACKGROUND),
         # Comet(225, 1, TAIL_LENGTH, SECONDARY, pixels, background=BACKGROUND),
         # Comet(250, 1, TAIL_LENGTH, PRIMARY, pixels, background=BACKGROUND),
-        Terminal(pixels, delay=0.15),
+        Terminal(pixels, delay=0.025),
     ]
 
     for comet in itertools.cycle(comets):
