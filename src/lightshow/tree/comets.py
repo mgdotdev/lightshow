@@ -56,10 +56,22 @@ class Spark:
         self.x += dx
 
 
+def color_picker():
+    colors = [
+        (255,0,0),
+        (0,255,0),
+        (255,255,255),
+    ]
+    coll = itertools.cycle(colors)
+    def color():
+        return next(coll)
+    return color
+
 class Sparks:
     def __init__(self, *args):
         self.coll = list(args)
         self._last = time.time()
+        self._color = color_picker()
 
     def __iter__(self):
         return iter(self.coll)
@@ -78,16 +90,16 @@ class Sparks:
 
     def replenish(self):
         now = time.time()
-        if now - self._last > 1:
+        if now - self._last > 5:
             self._last = now
-            self.add(Spark(0, (255, 0, 0)))
+            self.add(Spark(0, self._color()))
 
 
 def new_comets(pixels):
-    sparks = Sparks()
+    sparks = Sparks(Spark(0, (0,0,255)))
     while True:
         pixels.fill((0,0,0))
-        sparks.step(0.2)
+        sparks.step(0.5)
         _update_lights(pixels, sparks)
         pixels.show()
         sparks.replenish()
