@@ -82,8 +82,10 @@ class Sparks:
 def new_comets(pixels):
     sparks = Sparks()
     while True:
+        pixels.fill((0,0,0))
         sparks.replenish()
         sparks.step(1)
         _update_lights(pixels, sparks)
+        pixels.show()
         sparks.prune()
         time.sleep(0.05)
