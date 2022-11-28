@@ -39,10 +39,10 @@ def comets(pixels):
 
 
 def _update_lights(pixels, sparks):
-    for index, item in enumerate(pixels):
-        for spark in sparks:
+    for spark in sparks:
+        for index, item in enumerate(pixels):
             dist = abs(spark.x - index)
-            color = _color_from_distance(spark.color, dist, -0.25)
+            color = _color_from_distance(spark.color, dist, -0.1)
             color = _color_merge(item, color)
             pixels[index] = color
 
@@ -59,6 +59,7 @@ class Spark:
 class Sparks:
     def __init__(self, *args):
         self.coll = list(args)
+        self._last = time.time()
 
     def __iter__(self):
         return iter(self.coll)
@@ -75,24 +76,20 @@ class Sparks:
             item for item in self.coll if item.x < 400
         ]
 
-def _add_every_five(sparks):
-    last = time.time()
-    def _add():
-        nonlocal last
+    def replenish(self):
         now = time.time()
-        if now - last > 5:
-            last = now
-            sparks.add(Spark(-50, (255, 0, 0)))
-    return _add
+        if now - self._last > 1:
+            self._last = now
+            self.add(Spark(0, (255, 0, 0)))
+
 
 def new_comets(pixels):
     sparks = Sparks()
-    replenish = _add_every_five(sparks)
     while True:
         pixels.fill((0,0,0))
         sparks.step(0.2)
         _update_lights(pixels, sparks)
         pixels.show()
-        replenish()
+        sparks.replenish()
         sparks.prune()
 
