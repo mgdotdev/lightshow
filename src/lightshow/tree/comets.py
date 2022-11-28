@@ -42,7 +42,7 @@ def _update_lights(pixels, sparks):
     for spark in sparks:
         for index, item in enumerate(pixels):
             dist = abs(spark.x - index)
-            color = _color_from_distance(spark.color, dist, -0.1)
+            color = _color_from_distance(spark.color, dist, -0.2)
             color = _color_merge(item, color)
             pixels[index] = color
 
@@ -85,7 +85,7 @@ class Sparks:
 
     def prune(self):
         self.coll = [
-            item for item in self.coll if item.x < 400
+            item for item in self.coll if item.x < 450
         ]
 
     def replenish(self):
@@ -96,7 +96,7 @@ class Sparks:
 
 
 def new_comets(pixels):
-    sparks = Sparks(Spark(0, (0,0,255)))
+    sparks = Sparks(Spark(-100, (0,0, 255)))
     while True:
         pixels.fill((0,0,0))
         sparks.step(0.5)
