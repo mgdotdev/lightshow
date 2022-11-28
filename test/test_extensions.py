@@ -16,3 +16,7 @@ class TestExtenstions:
 
     def test_color_from_distance(self):
         assert _color_from_distance((255, 255, 255), 0.01, -10) == (230, 230, 230)
+
+    def test_color_from_distance(self):
+        res = _color_from_distance((255, 255, 255), 1, -0.25)
+        assert res
