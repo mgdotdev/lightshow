@@ -28,3 +28,12 @@ class TestComets:
             -0.2
         )
         assert item == (208, 208, 208)
+
+        item = _color_from_collection(
+            101,
+            [0,0,0],
+            sparks,
+            -0.2
+        )
+
+        assert item == (0, 0, 0)

@@ -1,14 +1,6 @@
 #include <Python.h>
 #include <math.h>
 
-double _abs(double x, double y) {
-    double res = x - y;
-    if (res < 0) {
-        res = -1 * res;
-    }
-    return res;
-}
-
 long int _truncate(long item) {
     if (item > 255) {
         item = 255;
@@ -19,7 +11,10 @@ long int _truncate(long item) {
 }
 
 int _decay(int color, double weight, double distance) {
-    if (distance <= 0.0) {
+    if (distance < 0.0) {
+        return 0;
+    }
+    else if (distance == 0.0) {
         return color;
     }
     int result = color * exp(weight * distance);
@@ -45,7 +40,7 @@ static PyObject* _color_from_collection(PyObject* self, PyObject* args) {
         PyObject* color = PyObject_GetAttrString(next, "color");
         PyObject* _x = PyObject_GetAttrString(next, "x");
         double x = PyFloat_AsDouble(_x);
-        double distance = _abs(x, index);
+        double distance = x - index;
 
         int sr, sg, sb;
         sg = PyLong_AsLong(PyTuple_GetItem(color, 0));
