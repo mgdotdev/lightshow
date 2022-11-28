@@ -59,6 +59,9 @@ class Sparks:
     def __init__(self, *args):
         self.coll = list(args)
 
+    def __iter__(self):
+        return self.coll
+
     def add(self, *sparks):
         self.coll.extend(sparks)
 
