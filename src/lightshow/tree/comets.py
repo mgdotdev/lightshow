@@ -76,10 +76,10 @@ class Sparks:
         ]
 
 def _add_every_five(sparks):
-    last = time.now()
+    last = time.time()
     def _add():
         nonlocal last
-        now = time.now()
+        now = time.time()
         if now - last > 5:
             last = now
             sparks.add(Spark(-50, (255, 0, 0)))
