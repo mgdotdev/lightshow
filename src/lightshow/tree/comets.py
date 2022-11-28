@@ -60,7 +60,7 @@ class Sparks:
         self.coll = list(args)
 
     def __iter__(self):
-        return self.coll
+        return iter(self.coll)
 
     def add(self, *sparks):
         self.coll.extend(sparks)
