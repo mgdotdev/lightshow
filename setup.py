@@ -11,6 +11,10 @@ extensions = [
     Extension(
         "lightshow.pc.extensions.LightshowTools",
         [os.path.join("src", "lightshow", "pc", "extensions", "LightshowTools.c")],
+    ),
+    Extension(
+        "lightshow.tree.extensions",
+        [os.path.join("src", "lightshow", "tree", "extensions.c")]
     )
 ]
 

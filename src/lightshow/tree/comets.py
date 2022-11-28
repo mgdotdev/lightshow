@@ -2,10 +2,7 @@ import itertools
 import time
 
 from ..objects import Comet, Terminal
-from ..pc.extensions.LightshowTools import (
-    _color_merge,
-    _color_from_distance,
-)
+from .extensions import _color_from_collection
 
 BACKGROUND = (1, 1, 1)
 
@@ -39,13 +36,13 @@ def comets(pixels):
 
 
 def _update_lights(pixels, sparks):
-    for spark in sparks:
-        for index, item in enumerate(pixels):
-            dist = abs(spark.x - index)
-            color = _color_from_distance(spark.color, dist, -0.3)
-            color = _color_merge(item, color)
-            pixels[index] = color
-
+    for index, item in enumerate(pixels):
+        pixels[index] = _color_from_collection(
+            index,
+            item,
+            sparks,
+            -0.2,
+        )
 
 class Spark:
     def __init__(self, x, color):
@@ -96,7 +93,7 @@ class Sparks:
 
 
 def new_comets(pixels):
-    sparks = Sparks(Spark(-50, (0,0, 255)))
+    sparks = Sparks(Spark(-50, (0, 0, 255)))
     while True:
         pixels.fill((0,0,0))
         sparks.step(0.5)
