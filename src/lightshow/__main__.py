@@ -6,7 +6,7 @@ import neopixel
 
 from .tools import color_from_string
 from .pc.circle import circle as pc_circle
-from .tree.comets import comets as tree_comets
+from .tree.comets import comets as tree_comets, new_comets as new_tree_comets
 from .window.circle import circle as window_circle
 from .window.comets import comets as window_comets
 from .pc.euclidean import fire as pc_fire
@@ -39,7 +39,10 @@ def main():
         if effect == OFF:
             return
         elif effect == "comets":
-            tree_comets(pixels)
+            if "new" in options:
+                new_tree_comets(pixels)
+            else:
+                tree_comets(pixels)
     elif target == "keylime":
         px1 = neopixel.NeoPixel(board.D18, 13, brightness=1, auto_write=False)
         px2 = neopixel.NeoPixel(board.D21, 13, brightness=1, auto_write=False)

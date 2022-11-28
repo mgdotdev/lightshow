@@ -1,6 +1,11 @@
 import itertools
+import time
 
 from ..objects import Comet, Terminal
+from ..pc.extensions.LightshowTools import (
+    _color_merge,
+    _color_from_distance,
+)
 
 BACKGROUND = (1, 1, 1)
 
@@ -26,8 +31,56 @@ def comets(pixels):
         Comet(300, 1, TAIL_LENGTH, PRIMARY, pixels, background=BACKGROUND),
         # Comet(225, 1, TAIL_LENGTH, SECONDARY, pixels, background=BACKGROUND),
         # Comet(250, 1, TAIL_LENGTH, PRIMARY, pixels, background=BACKGROUND),
-        Terminal(pixels, delay=0.025),
+        Terminal(pixels, delay=0.0125),
     ]
 
     for comet in itertools.cycle(comets):
         next(comet)
+
+
+def _update_lights(pixels, sparks):
+    for index, item in enumerate(pixels):
+        for spark in sparks:
+            dist = abs(spark.x - index)
+            color = _color_from_distance(spark.color, dist, -20)
+            pixels[index] = _color_merge(item, color)
+
+
+class Spark:
+    def __init__(self, x, color):
+        self.x = x
+        self.color = color
+
+    def step(self, dx):
+        self.x += dx
+
+
+class Sparks:
+    def __init__(self, *args):
+        self.coll = list(args)
+
+    def add(self, *sparks):
+        self.coll.extend(sparks)
+
+    def step(self, dx):
+        for spark in self.coll:
+            spark.step(dx)
+
+    def prune(self):
+        self.coll = [
+            item for item in self.coll if item.x > 400
+        ]
+
+    def replenish(self):
+        if len(self.coll) < 1:
+            self.add(Spark(-0.5, (255,0,0)))
+
+
+def new_comets(pixels):
+    sparks = Sparks()
+    while True:
+        sparks.replenish()
+        sparks.step(1)
+        _update_lights(pixels, sparks)
+        sparks.prune()
+        time.sleep(0.05)
