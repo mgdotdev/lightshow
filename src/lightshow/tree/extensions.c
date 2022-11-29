@@ -25,9 +25,8 @@ static PyObject* _color_from_collection(PyObject* self, PyObject* args) {
     long index;
     PyObject* pixel;
     PyObject* sparks;
-    double weight;
 
-    PyArg_ParseTuple(args, "lOOd", &index, &pixel, &sparks, &weight);
+    PyArg_ParseTuple(args, "lOO", &index, &pixel, &sparks);
 
     int g, r, b;
     g = PyLong_AsLong(PyList_GetItem(pixel, 0));
@@ -39,7 +38,9 @@ static PyObject* _color_from_collection(PyObject* self, PyObject* args) {
     while ((next = PyIter_Next(iter))) {
         PyObject* color = PyObject_GetAttrString(next, "color");
         PyObject* _x = PyObject_GetAttrString(next, "x");
+        PyObject* _weight = PyObject_GetAttrString(next, "weight");
         double x = PyFloat_AsDouble(_x);
+        double weight = PyFloat_AsDouble(weight);
         double distance = x - index;
 
         int sr, sg, sb;
@@ -57,6 +58,7 @@ static PyObject* _color_from_collection(PyObject* self, PyObject* args) {
 
         Py_DECREF(color);
         Py_DECREF(_x);
+        Py_DECREF(weight);
         Py_DECREF(next);
     }
     Py_DECREF(iter);

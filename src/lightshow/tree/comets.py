@@ -41,23 +41,27 @@ def _update_lights(pixels, sparks):
             index,
             item,
             sparks,
-            -0.2,
         )
 
 class Spark:
-    def __init__(self, x, color):
+    def __init__(self, x, color, weight):
         self.x = x
         self.color = color
+        self.weight = weight
 
     def step(self, dx):
         self.x += dx
 
 
-def color_picker():
+def params_picker():
     colors = [
-        (255,0,0),
-        (0,255,0),
-        (255,255,255),
+        ((255,0,0), -0.15),
+        ((0,255,0), -0.15),
+        ((255,0,0), -0.15),
+        ((255,255,255), -0.2),
+        ((0,255,0), -0.15),
+        ((255,0,0), -0.15),
+        ((0,255,0), -0.15),
     ]
     coll = itertools.cycle(colors)
     def color():
@@ -68,7 +72,7 @@ class Sparks:
     def __init__(self, *args):
         self.coll = list(args)
         self._last = time.time()
-        self._color = color_picker()
+        self._params = params_picker()
 
     def __iter__(self):
         return iter(self.coll)
@@ -89,11 +93,11 @@ class Sparks:
         now = time.time()
         if now - self._last > 1:
             self._last = now
-            self.add(Spark(-50, self._color()))
+            self.add(Spark(-50, *self._params()))
 
 
 def new_comets(pixels):
-    sparks = Sparks(Spark(-50, (0, 0, 255)))
+    sparks = Sparks(Spark(-50, (255, 255, 255), -0.2))
     while True:
         pixels.fill((0,0,0))
         sparks.step(0.5)
