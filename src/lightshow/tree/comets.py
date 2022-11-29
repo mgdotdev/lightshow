@@ -62,6 +62,7 @@ def params_picker():
         ((0,255,0), -0.15),
         ((255,0,0), -0.15),
         ((0,255,0), -0.15),
+        ((255,255,255), -0.2),
     ]
     coll = itertools.cycle(colors)
     def color():
