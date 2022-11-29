@@ -40,7 +40,7 @@ static PyObject* _color_from_collection(PyObject* self, PyObject* args) {
         PyObject* _x = PyObject_GetAttrString(next, "x");
         PyObject* _weight = PyObject_GetAttrString(next, "weight");
         double x = PyFloat_AsDouble(_x);
-        double weight = PyFloat_AsDouble(weight);
+        double weight = PyFloat_AsDouble(_weight);
         double distance = x - index;
 
         int sr, sg, sb;
@@ -58,7 +58,7 @@ static PyObject* _color_from_collection(PyObject* self, PyObject* args) {
 
         Py_DECREF(color);
         Py_DECREF(_x);
-        Py_DECREF(weight);
+        Py_DECREF(_weight);
         Py_DECREF(next);
     }
     Py_DECREF(iter);
